@@ -13,5 +13,8 @@
     </head>
     <body>
         <h1>And so it begins</h1>
+        <p>Something to add for commits</p>
+        <p>Something to add for commits2</p>
+        <p>Something to add for commits3</p>
     </body>
 </html>
