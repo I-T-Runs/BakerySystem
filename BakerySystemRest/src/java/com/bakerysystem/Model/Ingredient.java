@@ -1,3 +1,5 @@
+package com.bakerysystem.Model;
+
 
 public class Ingredient {
 	private int ingredientId; 
@@ -11,6 +13,10 @@ public class Ingredient {
 		this.ingredient = ingredient;
 		this.quantity = quantity;
 	}
+        public void cosume(){
+            
+        }
+        
 	@Override
 	public String toString() {
 		return "Ingredient [ingredientId=" + ingredientId + ", ingredient=" + ingredient + ", quantity=" + quantity

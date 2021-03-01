@@ -1,3 +1,4 @@
+import com.bakerysystem.Model.Ingredient;
 import java.util.ArrayList;
 
 public class Product {
