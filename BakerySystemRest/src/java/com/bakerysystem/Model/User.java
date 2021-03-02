@@ -9,13 +9,15 @@ public class User {
 	
 	
 	public User(){}
-	public User(int userId, String userName, String email, String password, String userType) {
-		super();
-		this.userId = userId;
+        public User( String userName, String email, String password, String userType) {
 		this.userName = userName;
 		this.email = email;
 		this.password = password;
 		this.userType = userType;
+	}
+	public User(int userId, String userName, String email, String password, String userType) {
+		this(userName, email, password, userType);
+                this.userId = userId;
 	}
 	@Override
 	public String toString() {
