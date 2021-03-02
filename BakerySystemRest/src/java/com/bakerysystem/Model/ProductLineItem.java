@@ -1,3 +1,5 @@
+package com.bakerysystem.Model;
+
 
 public class ProductLineItem {
 	private  int productID ; 
