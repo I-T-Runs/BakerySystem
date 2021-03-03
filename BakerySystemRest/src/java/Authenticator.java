@@ -2,6 +2,8 @@
  *
  * @author Themba
  */
+import com.bakerysystem.Model.User;
+
 public class Authenticator {
     
     // LOGIN

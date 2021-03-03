@@ -1,3 +1,5 @@
+package com.bakerysystem.Model;
+
 import com.bakerysystem.Model.Ingredient;
 import java.util.ArrayList;
 

@@ -1,3 +1,4 @@
+package com.bakerysystem.Model;
 
 public class User {
 	

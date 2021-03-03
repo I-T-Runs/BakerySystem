@@ -1,3 +1,5 @@
+package com.bakerysystem.Model;
+
 
 public class Payment {
 	private boolean paid;

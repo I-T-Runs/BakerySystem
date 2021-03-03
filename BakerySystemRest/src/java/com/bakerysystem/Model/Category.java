@@ -1,3 +1,5 @@
+package com.bakerysystem.Model;
+
 import java.util.ArrayList;
 
 public class Category {

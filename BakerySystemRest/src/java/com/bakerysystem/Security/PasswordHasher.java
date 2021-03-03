@@ -25,5 +25,9 @@ public class PasswordHasher {
 		
 		return hexString.toString(); 
 	} 
+        
+        public static void main(String [] agr){
+            System.out.println(PasswordHasher.hashPassword("T2password"));;
+        }
 	
 }
