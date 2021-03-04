@@ -16,9 +16,9 @@ public class GuestServlet extends HttpServlet {
         String process = request.getParameter("pro");
         if (process != null) {
             System.out.println("[Controller] Incoming process: " + process);
-            ProcessRequestA pr = RequestFactory.createRequestAction(process);
-            if (pr != null) {
-                pr.processTheRequest(request, response);
+            ProcessRequestA pra = RequestFactory.createRequestAction(process);
+            if (pra != null) {
+                pra.processTheRequest(request, response);
             }
         }
     }

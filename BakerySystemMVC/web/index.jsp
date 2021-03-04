@@ -59,7 +59,7 @@
             <a href="#allproducts" onclick="w3_close()" class="w3-bar-item w3-button">VIEW ALL PRODUCTS</a>
             <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a> 
             <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
-            <a href="SignIn.jsp" onclick="w3_close()" class="w3-bar-item w3-button">ACCOUNT</a>
+            <a href="Guest/SignIn.jsp" onclick="w3_close()" class="w3-bar-item w3-button">ACCOUNT</a>
             <a href="#viewcart" onclick="w3_close()" class="w3-bar-item w3-button">VIEW CART</a>
         </nav>
 

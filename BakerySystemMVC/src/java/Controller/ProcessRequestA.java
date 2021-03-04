@@ -12,7 +12,7 @@ public abstract class ProcessRequestA {
     public abstract void processTheRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
     protected abstract void sendResponseToServer(HttpServletResponse response, String jsonString);
-    
+
     protected abstract void getResponseFromServer() throws MalformedURLException, ProtocolException, IOException;
 
     protected abstract void sendResponseToController(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;

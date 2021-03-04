@@ -87,7 +87,7 @@ public class ProductProcess extends ProcessRequestA {
 
     @Override
     protected void sendResponseToController(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher view = request.getRequestDispatcher("SignIn.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("Guest/SignIn.jsp");
         view.forward(request, response);
     }
 
