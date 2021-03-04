@@ -5,6 +5,8 @@
  */
 package com.bakerysystem.RestAPI;
 
+import com.bakerysystem.Daos.ProductDao;
+import com.bakerysystem.Daos.ProductDaoImpl;
 import com.bakerysystem.Model.*;
 import java.util.ArrayList;
 import javax.ws.rs.*;
@@ -16,9 +18,7 @@ import javax.ws.rs.core.Response;
  * @author Themba
  */
 
-//v   application/
-
-@Path("/")
+//v   application/@Path("/")
 public class ProductHandlerAPI {
     
     //  app/product
@@ -34,10 +34,14 @@ public class ProductHandlerAPI {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
         }
         
-        for (int i = 0; i < 20; i++) {
-            Product prod = new Product(i, "Product " + (i + 1), null, recipe, 0); 
-            catalogue.add(prod);
-        }
+//        for (int i = 0; i < 20; i++) {
+//            
+//            Product prod = new Product(i, "Product " + (i + 1), null, recipe);
+//            Product prod1 = new Product(i,"Product",)
+//            catalogue.add(prod);
+//        }
+
+        
         
         return catalogue;
     }
@@ -52,7 +56,10 @@ public class ProductHandlerAPI {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
         }
         
-        Product prod =  new Product(productid, "Product " + productid , null, recipe, 0);
+//        Product prod =  new Product(productid, "Product " + productid , null, recipe, 0);
+
+        ProductDao dao = new ProductDaoImpl();
+        Product prod = dao.getProduct(productid);
         
         return prod;
     }
