@@ -9,29 +9,21 @@ package com.bakerysystem.Model;
  *
  * @author Themba
  */
-class AddressClass {
+public class AddressClass {
     private int addressId;
-    private String streetAndHouseNo;
+    private int houseNumber;
+    private String streetName;
     private String suburb;
     private String city;
     private int postalCode;
+
+    public AddressClass(int addID, int houseNo, String strName, String suburb, String city, int postCode) {
     
-    private boolean withinAComplexOrEstate;
-    private String estateOrComplexHouseNumber;
-
-    public AddressClass(int addressId, String streetAndHouseNo, String suburb, String city, int postalCode, boolean withinAComplexOrEstate, String estateOrComplexHouseNumber) {
-        this.addressId = addressId;
-        this.streetAndHouseNo = streetAndHouseNo;
-        this.suburb = suburb;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.withinAComplexOrEstate = withinAComplexOrEstate;
-        this.estateOrComplexHouseNumber = estateOrComplexHouseNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "AddressClass{" + "addressId=" + addressId + ", streetAndHouseNo=" + streetAndHouseNo + ", suburb=" + suburb + ", city=" + city + ", postalCode=" + postalCode + ", withinAComplexOrEstate=" + withinAComplexOrEstate + ", estateOrComplexHouseNumber=" + estateOrComplexHouseNumber + '}';
+        setAddressId(addID);
+        setHouseNumber(houseNo);
+        setStreetName(strName);
+        setSuburb(suburb);
+        setPostalCode(postCode);
     }
 
     public int getAddressId() {
@@ -42,12 +34,20 @@ class AddressClass {
         this.addressId = addressId;
     }
 
-    public String getStreetAndHouseNo() {
-        return streetAndHouseNo;
+    public int getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setStreetAndHouseNo(String streetAndHouseNo) {
-        this.streetAndHouseNo = streetAndHouseNo;
+    public void setHouseNumber(int houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     public String getSuburb() {
@@ -74,22 +74,10 @@ class AddressClass {
         this.postalCode = postalCode;
     }
 
-    public boolean isWithinAComplexOrEstate() {
-        return withinAComplexOrEstate;
+    @Override
+    public String toString() {
+        return "Address: " + getHouseNumber() + " " + getStreetName() + " " + getSuburb() + " " + getCity() + " " + getPostalCode();
     }
-
-    public void setWithinAComplexOrEstate(boolean withinAComplexOrEstate) {
-        this.withinAComplexOrEstate = withinAComplexOrEstate;
-    }
-
-    public String getEstateOrComplexHouseNumber() {
-        return estateOrComplexHouseNumber;
-    }
-
-    public void setEstateOrComplexHouseNumber(String estateOrComplexHouseNumber) {
-        this.estateOrComplexHouseNumber = estateOrComplexHouseNumber;
-    }
-    
     
     
 }
