@@ -6,28 +6,59 @@ import java.util.ArrayList;
 public class Product {
 	private int productID ;
 	private String productName ; 
-	private Category category ; 
+        private String photo;
+	private int categoryID; 
 	private ArrayList<Ingredient> recipeArr ;
 	private int  currentlyAvailable ;
-	
-	public Product(int productID, String productName, Category category, ArrayList<Ingredient> recipeArr,
-			int currentlyAvailable) {
+        private float price;
+        private float actualPrice;
+        private int discount;       
+        private String productDescription;
+        private String productWarnings;
+
+        public Product() {
+    
+        }
+   
+	public Product(int productID, String productName, String photo, int categoryID, float price, int discount, ArrayList<Ingredient> recipeArr, String productDescription, String productWarnings) {
 		super();
-		this.productID = productID;
-		this.productName = productName;
-		this.category = category;
-		this.recipeArr = recipeArr;
-		this.currentlyAvailable = currentlyAvailable;
+		setProductID(productID);
+                setProductName(productName);
+                setPhoto(photo);
+                setCategoryID(categoryID);
+                setPrice(price);
+                setDiscount(discount);
+                setRecipeArr(recipeArr);
+                setProductDescription(productDescription);
+                setProductWarnings(productWarnings);
 	}
 
 	@Override
 	public String toString() {
-		return "Product [productID=" + productID + ", productName=" + productName + ", category=" + category
+		return "Product [productID=" + productID + ", productName=" + productName + ", category=" + categoryID
 				+ ", currentlyAvailable=" + currentlyAvailable + "]";
 	}
-	public int getProductID() {
-		return productID;
-	}
+    public int getProductID() {
+        return productID;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+        setActualPrice((float)((100-discount)/100)*this.price);
+    }
+        
 	public void setProductID(int productID) {
 		this.productID = productID;
 	}
@@ -37,12 +68,15 @@ public class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public Category getCategory() {
-		return category;
-	}
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+
+        public int getCategoryID() {
+            return categoryID;
+        }
+
+        public void setCategoryID(int categoryID) {
+            this.categoryID = categoryID;
+        }
+        
 	public ArrayList<Ingredient> getRecipeArr() {
 		return recipeArr;
 	}
@@ -55,6 +89,37 @@ public class Product {
 	public void setCurrentlyAvailable(int currentlyAvailable) {
 		this.currentlyAvailable = currentlyAvailable;
 	} 
-	
-	
+
+        public String getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
+
+        public float getActualPrice() {
+            return actualPrice;
+        }
+
+        public void setActualPrice(float actualPrice) {
+            this.actualPrice = actualPrice;
+        }
+
+        public String getProductDescription() {
+            return productDescription;
+        }
+
+        public void setProductDescription(String productDescription) {
+            this.productDescription = productDescription;
+        }
+
+    public String getProductWarnings() {
+        return this.productWarnings;
+    }
+
+    public void setProductWarnings(String productWarnings) {
+        this.productWarnings = productWarnings;
+    }
+        
 }
