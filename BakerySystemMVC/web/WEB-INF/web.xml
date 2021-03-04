@@ -2,11 +2,11 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
         <servlet-name>cs</servlet-name>
-        <servlet-class>account.jsp</servlet-class>
+        <servlet-class>Controller.GuestServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>cs</servlet-name>
-        <url-pattern>/account</url-pattern>
+        <url-pattern>/guest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

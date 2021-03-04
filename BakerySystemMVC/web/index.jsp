@@ -4,10 +4,6 @@
     Author     : David
 --%>
 
-<%@page import="Model.ProductLineItem"%>
-<%@page import="Model.Cart"%>
-<%@page import="Model.Customer"%>
-<%@page import="Model.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -51,13 +47,6 @@
     </head>
     <body class="w3-light-grey w3-content w3-center" id='body' style="max-width:1600px">
 
-        <%
-            Customer customer = new Customer();
-            Product product = new Product();
-            Cart cart = new Cart();
-
-        %>
-
         <!-- Sidebar/menu -->
         <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top w3-center" style="z-index:3;width:300px;font-weight:bold" id="mySidebar"><br>
             <div>
@@ -70,7 +59,7 @@
             <a href="#allproducts" onclick="w3_close()" class="w3-bar-item w3-button">VIEW ALL PRODUCTS</a>
             <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a> 
             <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
-            <a href="#account" onclick="openAccount();w3_close();" class="w3-bar-item w3-button">ACCOUNT</a>
+            <a href="SignIn.jsp" onclick="w3_close()" class="w3-bar-item w3-button">ACCOUNT</a>
             <a href="#viewcart" onclick="w3_close()" class="w3-bar-item w3-button">VIEW CART</a>
         </nav>
 
