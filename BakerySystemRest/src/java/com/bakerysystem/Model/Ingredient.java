@@ -19,8 +19,7 @@ public class Ingredient {
         
 	@Override
 	public String toString() {
-		return "Ingredient [ingredientId=" + ingredientId + ", ingredient=" + ingredient + ", quantity=" + quantity
-				+ "]";
+		return "Ingredient [ingredientId=" + ingredientId + ", ingredient=" + ingredient + ", quantity=" + quantity + "]";
 	}
 	public int getIngredientId() {
 		return ingredientId;
