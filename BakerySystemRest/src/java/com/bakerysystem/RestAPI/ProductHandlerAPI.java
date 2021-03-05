@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bakerysystem.RestAPI;
 
 import com.bakerysystem.Daos.ProductDao;
@@ -18,7 +13,7 @@ import javax.ws.rs.core.Response;
  * @author Themba
  */
 
-//v   application/@Path("/")
+@Path("/")
 public class ProductHandlerAPI {
     
     //  app/product
@@ -47,19 +42,18 @@ public class ProductHandlerAPI {
     }
     
     @GET
-    @Path("/product/{productid}")
+    @Path("/product")
     @Produces(MediaType.APPLICATION_JSON)
-    public Product displayAProduct(@PathParam("productid") int productid ){//String displayAllProducts() {
+    public Product displayAProduct(@QueryParam("productid") int productid ){//String displayAllProducts() {
         
         ArrayList<Ingredient> recipe = new ArrayList<Ingredient>();
         for (int i = 0; i < 3; i++) {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
-        }
-        
+        }        
 //        Product prod =  new Product(productid, "Product " + productid , null, recipe, 0);
-
-        ProductDao dao = new ProductDaoImpl();
-        Product prod = dao.getProduct(productid);
+//                                                                    rs.getString("Photo"),
+        Product prod = new ProductDaoImpl().getProduct(productid);
+        prod.setRecipeArr(recipe);
         
         return prod;
     }

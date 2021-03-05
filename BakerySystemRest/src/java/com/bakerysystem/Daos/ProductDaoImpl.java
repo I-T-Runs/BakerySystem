@@ -86,22 +86,22 @@ public class ProductDaoImpl implements ProductDao {
         try {
             
             
-            ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+//            ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+//            rs = ps.executeQuery();
+//            
+//            while(rs.next()){
+//                
+//                ingrs.add(new Ingredient(rs.getInt("INGREDIENTTABLE"), rs.getString("NAME"), rs.getInt("QUANTITY")));
+//            }
+            
+            ps = myCon.prepareStatement("SELECT * FROM ProductTable WHERE ProductID = ? ");
+            
+            ps.setInt(1, productId);
+            
             rs = ps.executeQuery();
             
             while(rs.next()){
-                
-                ingrs.add(new Ingredient(rs.getInt("INGREDIENTTABLE"), rs.getString("NAME"), rs.getInt("QUANTITY")));
-            }
-            
-            ps = myCon.prepareStatement("SELECT PRODUCTID, CATEGORYID, PRODUCTNAME, PRICE, DISCOUNT, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS FROM PRODUCTSTABLE WHERE PRODUCTID = ? ");
-            rs = ps.executeQuery();
-            
-            
-                    
-            while(rs.next()){
-            
-                prd = new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getFloat("PRICE"), rs.getInt("DISCOUNT"), ingrs, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS"));
+                prd = new Product(rs.getInt("ProductID"), rs.getString("ProductName"), "Photo over here", rs.getInt("CategoryID"), rs.getFloat("Price"), rs.getInt("Discount"), ingrs, rs.getString("ProductDescription"), rs.getString("ProductWarnings"));
             }
             
         } catch (SQLException ex) {
@@ -110,4 +110,8 @@ public class ProductDaoImpl implements ProductDao {
         
         return prd;
     }
+//    
+//    public static void main(String [] args){
+//        System.out.println(new ProductDaoImpl().getProduct(1));
+//    }
 }
