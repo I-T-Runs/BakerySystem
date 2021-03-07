@@ -74,4 +74,16 @@ public class ProductHandlerAPI {
         
         return false;
     }
+    
+    
+    //
+    /*
+    
+        cart -> takes in a list of products
+    
+    
+    */
+    
+    
+    
 }

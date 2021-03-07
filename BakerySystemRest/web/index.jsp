@@ -13,5 +13,13 @@
     </head>
     <body>
         <h1>Changes to the Bakery System 3.0!</h1>
+        <form method="GET" action="/app/products">
+            
+        </form>
     </body>
 </html>
+<!--
+            <table>
+                <td>Username: </td>
+                <td><input type="text" value="<%= session.getAttribute("userid") %>" /></td>
+            </table>-->
