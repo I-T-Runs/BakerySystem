@@ -15,8 +15,22 @@ public class AddressDaoImpl implements AddressDao{
 
     @Override
     public AddressClass getAddress(int addressID) {
-     
-        
+         
         return null;
+    }
+
+    @Override
+    public void addCustomerAddress(AddressClass address) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean removeAddress(int addressID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean editAddress(int addressID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

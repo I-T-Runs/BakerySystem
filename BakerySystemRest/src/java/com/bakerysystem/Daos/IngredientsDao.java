@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Themba
  */
 public interface IngredientsDao {
-    public ArrayList<Ingredient> getIngredient();
+    public ArrayList<Ingredient> getIngredients();
     public Ingredient getIngredient(int ingredientid);            
     public boolean removeIngredient(int ingredientid);
     public boolean addIngredient();// 
