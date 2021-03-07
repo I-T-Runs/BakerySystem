@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "GuestServlet", urlPatterns = {"/guest"})
 public class GuestServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String process = request.getParameter("pro");
         if (process != null) {
             System.out.println("[Controller] Incoming process: " + process);
