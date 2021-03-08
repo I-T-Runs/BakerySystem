@@ -38,7 +38,7 @@ public class ProductProcess extends ProcessRequestA {
     @Override
     public void processTheRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("productId");
-        String jsonString = "{\"ProductID\":" + id + "}";
+        //String jsonString = "{\"ProductID\":" + id + "}";
         //String jsonString = "{\"\":\"\",\"\":\"\",\"\":" + val + "}";
 //        sendResponseToServer(response, jsonString);
 //        sendResponseToController(request, response);
