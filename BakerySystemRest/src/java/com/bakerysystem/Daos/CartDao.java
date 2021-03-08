@@ -5,20 +5,15 @@
  */
 package com.bakerysystem.Daos;
 
-import com.bakerysystem.Model.AddressClass;
+import com.bakerysystem.Model.Cart;
 
 /**
  *
  * @author keoagile
  */
-public class AddressDaoImpl implements AddressDao{
-
-    @Override
-    public AddressClass getAddress(int addressID) {
-     
-        
-        
-        
-        return null;
-    }
+public interface CartDao {
+    
+    Cart getCart(int cartID);
+    boolean addCart(Cart cart);
+    
 }

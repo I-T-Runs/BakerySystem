@@ -7,7 +7,6 @@ public class Category {
     //Attributes
     private int categoryID;
     private String categoryName ; 
-    private ArrayList<Product> productList;
 
     public Category(int catID, String catName) {
         setCategoryID(catID);
@@ -30,14 +29,6 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public ArrayList<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
     }
         
 }

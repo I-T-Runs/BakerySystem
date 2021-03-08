@@ -9,9 +9,9 @@ public class Ingredient {
 	public Ingredient(){}
 	public Ingredient(int ingredientId, String ingredientName, int quantity) {
 		super();
-		this.ingredientId = ingredientId;
-		this.ingredientName = ingredientName;
-		this.quantity = quantity;
+		setIngredientId(ingredientId);
+                setIngredientName(ingredientName);
+                setQuantity(quantity);
 	}
         public void cosume(){
             
@@ -40,7 +40,4 @@ public class Ingredient {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	} 
-
-	
-	
 }

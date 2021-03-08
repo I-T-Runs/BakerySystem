@@ -10,12 +10,13 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Themba
+ * @author keoagile
  */
 public interface CategoryDao {
-    public Category getCategory(int productId);            
-    public boolean removeCategory(int productId);
-    public boolean addCategory();// 
-    public Category updateCategory(int productId);
-    public ArrayList<Category> getProducts();              
+    
+   boolean addCategory(Category cat);
+   boolean removeCategory(int categoryID);
+   Category getCategory(int categoeyID);
+   ArrayList<Category> getAllCategories();
+   boolean updateCategory(Category cat);
 }

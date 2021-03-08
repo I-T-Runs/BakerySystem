@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.AddressClass;
@@ -8,11 +12,5 @@ import com.bakerysystem.Model.AddressClass;
  */
 public interface AddressDao {
     
-    // cant be getting all the addresses though
-    // public List<AddressClass> getAllAddresses();
-    public AddressClass getAddress(int addressID);
-    public void addCustomerAddress(AddressClass address);
-    public boolean removeAddress(int addressID);
-    public boolean editAddress(int addressID);
-    
+    AddressClass getAddress(int addressID);
 }

@@ -10,17 +10,18 @@ public class Product {
 	private int categoryID; 
 	private ArrayList<Ingredient> recipeArr ;
 	private int  currentlyAvailable ;
-        private float price;
-        private float actualPrice;
+        private double price;
+        private double actualPrice;
         private int discount;       
         private String productDescription;
         private String productWarnings;
+        
 
         public Product() {
     
         }
    
-	public Product(int productID, String productName, String photo, int categoryID, float price, int discount, ArrayList<Ingredient> recipeArr, String productDescription, String productWarnings) {
+	public Product(int productID, String productName, String photo, int categoryID, Double price, int discount, ArrayList<Ingredient> recipeArr, String productDescription, String productWarnings) {
 		super();
 		setProductID(productID);
                 setProductName(productName);
@@ -42,11 +43,11 @@ public class Product {
         return productID;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -56,7 +57,7 @@ public class Product {
 
     public void setDiscount(int discount) {
         this.discount = discount;
-        setActualPrice((float)((100-discount)/100)*this.price);
+        setActualPrice((double)((100-discount)/100)*this.price);
     }
         
 	public void setProductID(int productID) {
@@ -98,11 +99,11 @@ public class Product {
             this.photo = photo;
         }
 
-        public float getActualPrice() {
+        public double getActualPrice() {
             return actualPrice;
         }
 
-        public void setActualPrice(float actualPrice) {
+        public void setActualPrice(double actualPrice) {
             this.actualPrice = actualPrice;
         }
 
