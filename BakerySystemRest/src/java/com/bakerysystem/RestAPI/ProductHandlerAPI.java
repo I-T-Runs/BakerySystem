@@ -23,20 +23,15 @@ public class ProductHandlerAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Product> displayAllProducts(){//String displayAllProducts() {
         
-        ArrayList<Product> catalogue = new ArrayList<>();
+        ArrayList<Product> catalogue = new ProductDaoImpl().getProducts();//new ArrayList<>(); 
         ArrayList<Ingredient> recipe = new ArrayList<Ingredient>();
         for (int i = 0; i < 3; i++) {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
         }
         
-//        for (int i = 0; i < 20; i++) {
-//            
-//            Product prod = new Product(i, "Product " + (i + 1), null, recipe);
-//            Product prod1 = new Product(i,"Product",)
-//            catalogue.add(prod);
-//        }
-
-        
+        for (int i = 0; i < 20; i++) {            
+            catalogue.add(new Product(i, "Product " + (i + 1),".\\images\\imagename.file",111,10.99,0,recipe,"I am a product description","And This here is a warnging"));
+        }
         
         return catalogue;
     }

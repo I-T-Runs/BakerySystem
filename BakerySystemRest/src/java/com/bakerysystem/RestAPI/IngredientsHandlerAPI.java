@@ -32,9 +32,7 @@ public class IngredientsHandlerAPI {
     @Path("/add-ingredient-stock")
     @Consumes(MediaType.APPLICATION_JSON)
     public String addIngredient(){
-       
-        
-       
+
         // IF STATEMENT THAT WILL REPRESENT SUCCESSFUL CONDITION
        return FAILED;
     }
@@ -42,8 +40,7 @@ public class IngredientsHandlerAPI {
     @DELETE
     @Path("/delete-ingredient-stock-item")
     public String removeIngredient(@PathParam("ingredientid") int ingredientID){
-        
-                
+ 
                 // IF STATEMENT THAT WILL REPRESENT SUCCESSFUL CONDITION
         return FAILED;
     }
@@ -67,7 +64,7 @@ public class IngredientsHandlerAPI {
     @GET
     @Path("/ingredients")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Ingredient> retrieveAllIngrients(){
+    public List<Ingredient> retrieveAllIngredients(){
         //List<Ingredient> ingredients =  new CategoryDaoImpl().getIngredients();
         
         // return ingredients;
