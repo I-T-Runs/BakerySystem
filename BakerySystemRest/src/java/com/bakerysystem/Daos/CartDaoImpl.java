@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class CartDaoImpl implements CartDao {
 
     
-    private Connection myCon4;
+    private Connection myCon10;
     private PreparedStatement ps;
     private ResultSet rs;
     
@@ -38,30 +38,11 @@ public class CartDaoImpl implements CartDao {
 	
 		String url = "jdbc:mysql://localhost:3306/cakeshop";
 		try {
-			myCon4 = DriverManager.getConnection(url,"root","root");
+			myCon10 = DriverManager.getConnection(url,"root","root");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     
-    }
-    
-    @Override
-    public Cart getCart(int cartID) {
-        ArrayList<ProductLineItem> products = new ArrayList();
-        Cart cart;
-        try {
-            ps = myCon4.prepareStatement("SELECT PRODUCTID, PRODUCTNAME, QUANTITY FROM CARTTABLE WHERE CARTID = ?");
-            ps.setInt(1, cartID);
-            rs = ps.executeQuery();
-            
-            while(rs.next()){
-                products.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY")));
-            }  
-        } catch (SQLException ex) {
-            Logger.getLogger(CartDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return new Cart(cartID, products);
     }
 
     @Override
@@ -69,12 +50,16 @@ public class CartDaoImpl implements CartDao {
         int check = 0;
         
         try {
-            ps = myCon4.prepareStatement("INSER INTO CARTTABLE(CART)");
+            for(int i =0; i <cart.getProducts().size(); i++){
+            ps = myCon10.prepareStatement("INSERT INTO CARTTABLE(CARTID,CUSTOMERID,PRODUCTID,QUANTITY) VALUES(NULL,?,?,?,'ACTIVE')");
+            ps.setInt(1, cart.getCustomerId());
+            ps.setInt(2, cart.getProducts().get(i).getProductID());
+            ps.setInt(3, cart.getProducts().get(i).getQuantity());
+            check = ps.executeUpdate() + check; 
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CartDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return (check == 1);
+        return (check == cart.getProducts().size());
     }
-    
 }

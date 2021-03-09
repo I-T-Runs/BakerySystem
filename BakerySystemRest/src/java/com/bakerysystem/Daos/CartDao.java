@@ -13,7 +13,7 @@ import com.bakerysystem.Model.Cart;
  */
 public interface CartDao {
     
-    Cart getCart(int cartID);
     boolean addCart(Cart cart);
+    //boolean addCart(Cart cart);
     
 }
