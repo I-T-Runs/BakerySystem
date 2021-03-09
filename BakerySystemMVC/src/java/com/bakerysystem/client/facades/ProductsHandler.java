@@ -16,6 +16,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
@@ -26,50 +27,48 @@ public class ProductsHandler {
     public static ArrayList<Product> recieveProducts() {
         ArrayList<Product> catalogue = null;
         Product [] products = null;
-        try {
-            catalogue = new ArrayList<>();
-            
-            String url = "http://10.7.7.111:8084/BakerySystemRest/app/catalogue";
+        try {            
+            String url = "http://10.7.7.111:8080/BakerySystemRest/app/products/catalogue";
             Client restClient = ClientBuilder.newClient();
             WebTarget webTarget = restClient.target(url);
             System.out.println("Fetching Products...");
             
             ObjectMapper ob = new ObjectMapper();
-            String s = webTarget.request().accept("application/json").get(String.class);
+            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
             products = ob.readValue(s, Product[].class) ;
 //            System.out.println("RETURNED :\n " + prod);
+            catalogue = new ArrayList(Arrays.asList(products));    
             
-            return null;
         } catch (Exception ex) {
-            Logger.getLogger(ProductsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ERROR: Couldn't get products");
         }
-        catalogue = new ArrayList(Arrays.asList(products));
+        
         
         return catalogue;
     }
     
     public static Product recieveProduct(int productID) {
+        Product prod = null;
         try {
-            String url = "http://10.7.7.111:8084/BakerySystemRest/app/product/{productid}";
+            String url = "http://10.7.7.111:8080/BakerySystemRest/app/products/product/{productid}";
             Client restClient = ClientBuilder.newClient();
             WebTarget webTarget = restClient.target(url).resolveTemplate("productid", productID);
             System.out.println("Fetching Product...");
-            String s = webTarget.request().accept("application/json").get(String.class);
+            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
             
             ObjectMapper ob = new ObjectMapper();
-            Product prod = ob.readValue(s,Product.class);
+            prod = ob.readValue(s,Product.class);
             
             System.out.println("Fetch successfull");
             
-            return prod;
+            
         } catch (IOException ex) {
-            Logger.getLogger(ProductsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ERROR: Couldn't get product");
         }
-        return null;
+        return prod;
     }
 
     public static void main(String [] args){
-        
         System.out.println(new ProductsHandler().recieveProducts());
     }
 }
