@@ -1,4 +1,5 @@
-package com.bakerysystem.Model;
+package Model;
+
 
 
 public class Payment {

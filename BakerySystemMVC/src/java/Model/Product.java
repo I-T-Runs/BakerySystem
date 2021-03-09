@@ -1,6 +1,6 @@
 package Model;
 
-import com.bakerysystem.Model.Ingredient;
+import Model.Ingredient;
 import java.util.ArrayList;
 
 public class Product {
