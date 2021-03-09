@@ -1,10 +1,9 @@
 package Model;
 
 import Model.Ingredient;
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product implements Serializable {
+public class Product {
 	private int productID ;
 	private String productName ; 
         private String photo;
@@ -35,11 +34,12 @@ public class Product implements Serializable {
                 setProductWarnings(productWarnings);
 	}
 
-	@Override
-	public String toString() {
-		return "Product [productID=" + productID + ", productName=" + productName + ", category=" + categoryID
-				+ ", currentlyAvailable=" + currentlyAvailable + "]";
-	}
+    @Override
+    public String toString() {
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", photo=" + photo + ", categoryID=" + categoryID + ", recipeArr=" + recipeArr + ", currentlyAvailable=" + currentlyAvailable + ", price=" + price + ", actualPrice=" + actualPrice + ", discount=" + discount + ", productDescription=" + productDescription + ", productWarnings=" + productWarnings + '}';
+    }
+
+	
     public int getProductID() {
         return productID;
     }
