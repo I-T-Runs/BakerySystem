@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bakerysystem.client.facades;
 
 import Model.Product;
@@ -54,18 +49,23 @@ public class ProductsHandler {
     }
     
     public static Product recieveProduct(int productID) {
-        String url = "http://10.7.7.111:8084/BakerySystemRest/app/product/{productid}";
-        Client restClient = ClientBuilder.newClient();
-        WebTarget webTarget = restClient.target(url).resolveTemplate("productid", productID);
-        System.out.println("Fetching Product...");
-        String s = webTarget.request().accept("application/json").get(String.class);
-        
-        ObjectMapper ob = new ObjectMapper();
-        Product prod = ob.readValue(s,Product.class);
-        
-        System.out.println("Fetch successfull");
-        
-        return prod;
+        try {
+            String url = "http://10.7.7.111:8084/BakerySystemRest/app/product/{productid}";
+            Client restClient = ClientBuilder.newClient();
+            WebTarget webTarget = restClient.target(url).resolveTemplate("productid", productID);
+            System.out.println("Fetching Product...");
+            String s = webTarget.request().accept("application/json").get(String.class);
+            
+            ObjectMapper ob = new ObjectMapper();
+            Product prod = ob.readValue(s,Product.class);
+            
+            System.out.println("Fetch successfull");
+            
+            return prod;
+        } catch (IOException ex) {
+            Logger.getLogger(ProductsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public static void main(String [] args){

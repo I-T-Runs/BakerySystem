@@ -1,24 +1,25 @@
-package Model;
+package com.bakerysystem.Model;
+
 
 public class Ingredient {
 	private int ingredientId; 
-	private String ingredient ;
+	private String ingredientName ;
 	private int quantity ;
 	
 	public Ingredient(){}
-	public Ingredient(int ingredientId, String ingredient, int quantity) {
+	public Ingredient(int ingredientId, String ingredientName, int quantity) {
 		super();
-		this.ingredientId = ingredientId;
-		this.ingredient = ingredient;
-		this.quantity = quantity;
+		setIngredientId(ingredientId);
+                setIngredientName(ingredientName);
+                setQuantity(quantity);
 	}
-        public void consume(){
+        public void cosume(){
             
         }
         
 	@Override
 	public String toString() {
-		return "Ingredient [ingredientId=" + ingredientId + ", ingredient=" + ingredient + ", quantity=" + quantity
+		return "Ingredient [ingredientId=" + ingredientId + ", ingredient=" + ingredientName + ", quantity=" + quantity
 				+ "]";
 	}
 	public int getIngredientId() {
@@ -27,11 +28,11 @@ public class Ingredient {
 	public void setIngredientId(int ingredientId) {
 		this.ingredientId = ingredientId;
 	}
-	public String getIngredient() {
-		return ingredient;
+	public String getIngredientName() {
+		return ingredientName;
 	}
-	public void setIngredient(String ingredient) {
-		this.ingredient = ingredient;
+	public void setIngredientName(String ingredientName) {
+		this.ingredientName = ingredientName;
 	}
 	public int getQuantity() {
 		return quantity;
@@ -39,7 +40,4 @@ public class Ingredient {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	} 
-
-	
-	
 }
