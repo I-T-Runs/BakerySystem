@@ -1,7 +1,6 @@
 package Model;
 
 
-
 public class Ingredient {
 	private int ingredientId; 
 	private String ingredientName ;

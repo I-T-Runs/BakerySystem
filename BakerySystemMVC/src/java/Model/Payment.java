@@ -1,7 +1,6 @@
 package Model;
 
 
-
 public class Payment {
 	private boolean paid;
 
