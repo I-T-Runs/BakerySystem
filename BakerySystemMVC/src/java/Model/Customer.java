@@ -3,15 +3,13 @@ package Model;
 import java.util.ArrayList;
 
 public class Customer extends User {
-
+	
     private String customerId;
-    private String customerName;
+    private String customerName;    
     private Order order;
     private ArrayList<AddressClass> ownedAddresses;
 
-    public Customer() {
-    }
-
+    public Customer(){}
     public Customer(String customerId, String customerName, Order order, ArrayList<AddressClass> ownedAddresses) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -19,10 +17,6 @@ public class Customer extends User {
         this.ownedAddresses = ownedAddresses;
     }
     
-    public void addToCart(Product product, Cart cart){
-        
-    }
-
     public String getCustomerId() {
         return customerId;
     }
@@ -50,9 +44,9 @@ public class Customer extends User {
     public ArrayList<AddressClass> getOwnedAddresses() {
         return ownedAddresses;
     }
-
+    
     public void setOwnedAddresses(ArrayList<AddressClass> ownedAddresses) {
         this.ownedAddresses = ownedAddresses;
     }
-
+       	
 }
