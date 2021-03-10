@@ -14,42 +14,25 @@ public class Customer extends User {
     private String telephonemobile;
     private String ID;
     private int addressId;
-    private String address;
     private String password;
     private Cart cart;
-
-    public Customer() {
-    }
-
-    public Customer(int customerId, String Title, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String address, String password, Cart cart) {
-        this.customerId = customerId;
-        this.Title = Title;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephonehome = telephonehome;
-        this.telephonemobile = telephonemobile;
-        this.ID = ID;
-        this.addressId = addressId;
-        this.address = address;
-        this.password = password;
-        this.cart = cart;
-    }
-
-    public Customer(String firstName, String lastName, String email, String telephonemobile, String address, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephonemobile = telephonemobile;
-        this.address = address;
-        this.password = password;
-    }
-
-    public Customer(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
     
+    
+    public Customer() {}
+
+    public Customer(int customerId, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressID, String password ){
+        
+        this.customerId=customerId;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.email=email;
+        this.telephonehome=telephonehome;
+        this.telephonemobile=telephonemobile;
+        this.password=password;
+        this.ID = ID;
+        this.addressId=addressID;
+    }
+
     public int getCustomerId() {
         return customerId;
     }
@@ -137,12 +120,6 @@ public class Customer extends User {
     public void setTitle(String Title) {
         this.Title = Title;
     }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    
+    
 }
