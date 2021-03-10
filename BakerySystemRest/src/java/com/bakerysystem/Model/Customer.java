@@ -45,6 +45,11 @@ public class Customer extends User {
         this.password = password;
     }
 
+    public Customer(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+    
     public int getCustomerId() {
         return customerId;
     }
@@ -141,4 +146,3 @@ public class Customer extends User {
         this.address = address;
     }
 }
-
