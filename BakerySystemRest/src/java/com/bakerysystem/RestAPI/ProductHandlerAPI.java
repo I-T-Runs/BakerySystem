@@ -46,22 +46,22 @@ public class ProductHandlerAPI {
     @GET
     @Path("/product/{productid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Product getAProduct(@QueryParam("productid") int productid ){//String displayAllProducts() {
+    public Response getAProduct(@PathParam("productid") int productid ){//String displayAllProducts() {
         ArrayList<Ingredient> recipe = new ArrayList<Ingredient>();
         for (int i = 0; i < 3; i++) {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
         }        
-//        Product prod =  new Product(productid, "Product " + productid , null, recipe, 0);
+        Product prod =  new Product(productid, "name", FAILED, productid, 54.22, 22, recipe, SUCCESSFUL, SUCCESSFUL);
 //                                                                    rs.getString("Photo"),
-        Product prod = new ProductDaoImpl().getProduct(productid);//new Product(productid, "Product " + productid,".\\images\\imagename"+productid+".file",111,10.99,0,recipe,"I am a product description","And This here is a warning");//new ProductDaoImpl().getProduct(productid);
+//        Product prod = new ProductDaoImpl().getProduct(productid);//new Product(productid, "Product " + productid,".\\images\\imagename"+productid+".file",111,10.99,0,recipe,"I am a product description","And This here is a warning");//new ProductDaoImpl().getProduct(productid);
         
-//        if(prod.getProductID() == productid){
-//            return prod;
-//        }
+        if(prod.getProductID() == productid){
+            return Response.status(Response.Status.OK).entity(prod).build();
+        }
         
         prod.setRecipeArr(recipe);
 
-        return prod;
+        return Response.status(Response.Status.OK).entity("Couldn't get product").build();
     }
     
    

@@ -27,6 +27,8 @@ public class ProductsHandler {
             
             ObjectMapper ob = new ObjectMapper();
             String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+            
+            System.out.println(s+"\n");
             products = ob.readValue(s, Product[].class) ;
 //            System.out.println("RETURNED :\n " + prod);
             catalogue = new ArrayList(Arrays.asList(products));    
@@ -61,6 +63,6 @@ public class ProductsHandler {
     }
 
     public static void main(String [] args){
-        System.out.println(new ProductsHandler().recieveProducts());
+        System.out.println(new ProductsHandler().recieveProduct(65465));
     }
 }
