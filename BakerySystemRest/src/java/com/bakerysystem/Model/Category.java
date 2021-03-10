@@ -13,6 +13,9 @@ public class Category {
         setCategoryName(catName);
     }
     
+    public Category(String catNAme){
+        setCategoryName(catNAme);
+    }
     
     //Acessors/Mutators
     public int getCategoryID() {

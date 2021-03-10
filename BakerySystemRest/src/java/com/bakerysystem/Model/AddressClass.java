@@ -23,6 +23,7 @@ public class AddressClass {
         setHouseNumber(houseNo);
         setStreetName(strName);
         setSuburb(suburb);
+        setCity(city);
         setPostalCode(postCode);
     }
 
