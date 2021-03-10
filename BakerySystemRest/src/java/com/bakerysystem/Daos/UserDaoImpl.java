@@ -44,16 +44,16 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public User getUser(String username, String password) {
+    public User getUser(String email, String password) {
         
         try {
-            ps = myCon8.prepareStatement("SELECT USERID, USERNAME, EMAIL, PASSWORD, USERTYPE FROM USERSTABLE WHERE USERNAME = ? AND PASSWORD = ? AND ACTIVITY = 'ACTIVE'");
-            ps.setString(1, username);
+            ps = myCon8.prepareStatement("SELECT USERID, EMAIL, PASSWORD, USERTYPE FROM USERSTABLE WHERE EMAIL = ? AND PASSWORD = ? AND ACTIVITY = 'ACTIVE'");
+            ps.setString(1, email);
             ps.setString(2, password);
             rs = ps.executeQuery();
             
             while(rs.next()){
-                return new User(rs.getInt("USERID"), rs.getString("USERNAME"), rs.getString("EMAIL"), rs.getString("PASSWORD"), rs.getString("USERTYPE"));
+                return new User(rs.getInt("USERID"), rs.getString("EMAIL"), rs.getString("PASSWORD"), rs.getString("USERTYPE"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,12 +79,12 @@ public class UserDaoImpl implements UserDao {
        int check = 0;
        
         try {
-            ps = myCon8.prepareStatement("UPDATE USERSTABLE SET USERNAME = ?, EMAIL = ?, PASSWORD = ?, USERTYPE = ? WHERE USERID = ?");
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getUserType());
-            ps.setInt(5, user.getUserId());
+            ps = myCon8.prepareStatement("UPDATE USERSTABLE SET EMAIL = ?, PASSWORD = ?, USERTYPE = ? WHERE USERID = ?");
+           // ps.setString(1, user.getUserName());
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getUserType());
+            ps.setInt(4, user.getUserId());
             check = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,11 +97,11 @@ public class UserDaoImpl implements UserDao {
         int check = 0;
         
         try {
-            ps = myCon8.prepareStatement("INSERT INTO USERSTABLE(USERID,USERNAME,EMAIL,PASSWORD,USERTYPE,ACTIVITY) VALUES(NULL,?,?,?,?,'ACTIVE')");
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getUserType());
+            ps = myCon8.prepareStatement("INSERT INTO USERSTABLE(USERID,EMAIL,PASSWORD,USERTYPE,ACTIVITY) VALUES(NULL,?,?,?,'ACTIVE')");
+            //ps.setString(1, user.getUserName());
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getUserType());
             check = ps.executeUpdate();
                     } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,11 +114,11 @@ public class UserDaoImpl implements UserDao {
         ArrayList<User>listOfUsers = new ArrayList();
         
         try {
-            ps = myCon8.prepareStatement("SELECT USERID, USERNAME, EMAIL, PASSWORD, USERTYPE FROM USERSTABLE WHERE ACTIVITY = 'ACTIVE'");
+            ps = myCon8.prepareStatement("SELECT USERID, EMAIL, PASSWORD, USERTYPE FROM USERSTABLE WHERE ACTIVITY = 'ACTIVE'");
             rs = ps.executeQuery();
             
             while(rs.next()){           
-                listOfUsers.add(new User(rs.getInt("USERID"), rs.getString("USERNAME"), rs.getString("EMAIL"), rs.getString("PASSWORD"), rs.getString("USERTYPE")));
+                listOfUsers.add(new User(rs.getInt("USERID"), rs.getString("EMAIL"), rs.getString("PASSWORD"), rs.getString("USERTYPE")));
             }
                     } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
