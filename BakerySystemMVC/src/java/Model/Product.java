@@ -108,9 +108,9 @@ public class Product {
             this.actualPrice = actualPrice;
         }
 
-        public String getProductDescription() {
-            return productDescription;
-        }
+    public String getProductDescription() {
+        return productDescription;
+    }
 
         public void setProductDescription(String productDescription) {
             this.productDescription = productDescription;
@@ -123,5 +123,4 @@ public class Product {
     public void setProductWarnings(String productWarnings) {
         this.productWarnings = productWarnings;
     }
-        
 }

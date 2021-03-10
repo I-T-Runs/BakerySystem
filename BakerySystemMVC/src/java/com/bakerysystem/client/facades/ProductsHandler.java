@@ -43,8 +43,8 @@ public class ProductsHandler {
         Product prod = null;
         try {
             String url = "http://10.7.7.111:8080/BakerySystemRest/app/products/product/{productid}";
-            Client restClient = ClientBuilder.newClient();
-            WebTarget webTarget = restClient.target(url).resolveTemplate("productid", productID);
+            Client client = ClientBuilder.newClient();
+            WebTarget webTarget = client.target(url).resolveTemplate("productid", productID);
             System.out.println("Fetching Product...");
             String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
             

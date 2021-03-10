@@ -1,9 +1,10 @@
 package com.bakerysystem.Model;
 
 import com.bakerysystem.Model.Ingredient;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product {
+public class Product implements Serializable {
 	private int productID ;
 	private String productName ; 
         private String photo;

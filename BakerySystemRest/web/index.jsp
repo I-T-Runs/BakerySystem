@@ -13,9 +13,9 @@
     </head>
     <body>
         <h1>Changes to the Bakery System 3.0!</h1>
-        <form method="GET" action="/app/products">
+<!--        <form method="GET" action="/app/products">
             
-        </form>
+        </form>-->
     </body>
 </html>
 <!--
