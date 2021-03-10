@@ -36,7 +36,7 @@ public class ProductDaoImpl implements ProductDao {
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
+		String url = "jdbc:mysql://10.7.7.106:3306/cakeshop";
 		try {
 			myCon = DriverManager.getConnection(url,"root","root");
 		} catch (SQLException e) {
@@ -207,6 +207,10 @@ public class ProductDaoImpl implements ProductDao {
         }
         
         return true;   
+    }
+    
+    public static void main(String [] args){
+        System.out.println( new ProductDaoImpl().getProduct(1));
     }
 }
  

@@ -3,6 +3,7 @@ package com.bakerysystem.RestAPI;
 import com.bakerysystem.Daos.ProductDao;
 import com.bakerysystem.Daos.ProductDaoImpl;
 import com.bakerysystem.Model.*;
+import java.io.File;
 import java.util.ArrayList;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,72 +14,81 @@ import javax.ws.rs.core.Response;
  * @author Themba
  */
 
-@Path("/")
+// app/resources/catalogue
+
+@Path("/products")
 public class ProductHandlerAPI {
-    
-    //  app/product
+
+    private final String SUCCESSFUL = "SUCCESSFUL";
+    private final String FAILED = "FAILED";
     
     @GET
     @Path("/catalogue")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Product> displayAllProducts(){//String displayAllProducts() {
+    public ArrayList<Product> getProducts(){//String displayAllProducts() {
         
-        ArrayList<Product> catalogue = new ProductDaoImpl().getProducts();//new ArrayList<>(); 
-        ArrayList<Ingredient> recipe = new ArrayList<Ingredient>();
+        ArrayList<Product> catalogue = new ArrayList<>(); // new ProductDaoImpl().getProducts();
+        ArrayList<Ingredient> recipe = new ArrayList<>();
+        
         for (int i = 0; i < 3; i++) {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
         }
         
         for (int i = 0; i < 20; i++) {            
-            catalogue.add(new Product(i, "Product " + (i + 1),".\\images\\imagename.file",111,10.99,0,recipe,"I am a product description","And This here is a warnging"));
+            Product prod = new Product(i, "Product " + (i + 1),".\\images\\imagename"+i+".file",111,10.99,0,recipe,"I am a product description","And This here is a warnging");
+            catalogue.add(prod);
+            
         }
         
         return catalogue;
     }
     
     @GET
-    @Path("/product")
+    @Path("/product/{productid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Product displayAProduct(@QueryParam("productid") int productid ){//String displayAllProducts() {
-        
+    public Product getAProduct(@QueryParam("productid") int productid ){//String displayAllProducts() {
         ArrayList<Ingredient> recipe = new ArrayList<Ingredient>();
         for (int i = 0; i < 3; i++) {
             recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
         }        
 //        Product prod =  new Product(productid, "Product " + productid , null, recipe, 0);
 //                                                                    rs.getString("Photo"),
-        Product prod = new ProductDaoImpl().getProduct(productid);
-        prod.setRecipeArr(recipe);
+        Product prod = new ProductDaoImpl().getProduct(productid);//new Product(productid, "Product " + productid,".\\images\\imagename"+productid+".file",111,10.99,0,recipe,"I am a product description","And This here is a warning");//new ProductDaoImpl().getProduct(productid);
         
+//        if(prod.getProductID() == productid){
+//            return prod;
+//        }
+        
+        prod.setRecipeArr(recipe);
+
         return prod;
     }
     
+   
     
     @DELETE
     @Path("/remove/{productid}")
-    public boolean removeProduct(@PathParam("productid") int productid){
-        // remove product(productid)
-        
-        return false;
+    public String removeProduct(@QueryParam("productid") int productid){
+        new ProductDaoImpl().removeProduct(productid);
+        return FAILED;
     }
     
     @PUT
     @Path("/update/{productid}")
-    public boolean editProduct(){
-        // remove product(productid)
-        
-        return false;
+    public String editProduct(){
+//        new ProductDaoImpl().updateProduct(productid);        
+// GIVE DB a PRODUCT INSTANCE
+        return FAILED;
     }
     
-    
-    //
-    /*
-    
-        cart -> takes in a list of products
-    
-    
-    */
-    
-    
-    
+     @GET
+    @Path("/add-product")
+    public String addProduct(){ //Query @FormParam("")){
+        
+        // GIVE DB a PRODUCT INSTANCE
+        //new ProductDaoImpl().addProduct(prod);
+        
+        return "Hello";
+    }
+
 }
