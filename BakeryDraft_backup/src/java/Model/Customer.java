@@ -1,9 +1,11 @@
-package Model;
+package com.bakerysystem.Model;
 
-public class Customer extends User {
+import com.bakerysystem.Model.Order;
+import java.util.ArrayList;
+
+public class Customer {
 
     private int customerId;
-    private String Title;
     private String firstName;
     private String lastName;
     private String email;
@@ -11,42 +13,25 @@ public class Customer extends User {
     private String telephonemobile;
     private String ID;
     private int addressId;
-    private String address;
     private String password;
     private Cart cart;
-
-    public Customer() {
-    }
-
-    public Customer(int customerId, String Title, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String address, String password, Cart cart) {
-        this.customerId = customerId;
-        this.Title = Title;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephonehome = telephonehome;
-        this.telephonemobile = telephonemobile;
-        this.ID = ID;
-        this.addressId = addressId;
-        this.address = address;
-        this.password = password;
-        this.cart = cart;
-    }
-
-    public Customer(String firstName, String lastName, String email, String telephonemobile, String address, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephonemobile = telephonemobile;
-        this.address = address;
-        this.password = password;
-    }
-
-    public Customer(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
     
+    
+    public Customer() {}
+
+    public Customer(int customerId, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressID, String password ){
+        
+        this.customerId=customerId;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.email=email;
+        this.telephonehome=telephonehome;
+        this.telephonemobile=telephonemobile;
+        this.password=password;
+        this.ID = ID;
+        this.addressId=addressID;
+    }
+
     public int getCustomerId() {
         return customerId;
     }
@@ -125,21 +110,5 @@ public class Customer extends User {
 
     public void setCart(Cart cart) {
         this.cart = cart;
-    }
-
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String Title) {
-        this.Title = Title;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }
