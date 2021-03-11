@@ -16,25 +16,35 @@ public class Customer extends User {
     private int addressId;
     private String password;
     private Cart cart;
-    
-    
-    public Customer() {}
 
-    public Customer(int customerId, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressID, String password ){
-        
-        this.customerId=customerId;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.email=email;
-        this.telephonehome=telephonehome;
-        this.telephonemobile=telephonemobile;
-        this.password=password;
-        this.ID = ID;
-        this.addressId=addressID;
+    public Customer() {
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer(int customerId, String Title, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String password, Cart cart) {
+        this.customerId = customerId;
+        this.Title = Title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telephonehome = telephonehome;
+        this.telephonemobile = telephonemobile;
+        this.ID = ID;
+        this.addressId = addressId;
+        this.password = password;
+        this.cart = cart;
+    }
+
+    public Customer(String Title, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String password, Cart cart) {
+        this.Title = Title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telephonehome = telephonehome;
+        this.telephonemobile = telephonemobile;
+        this.ID = ID;
+        this.addressId = addressId;
+        this.password = password;
+        this.cart = cart;
     }
 
     public void setCustomerId(int customerId) {
@@ -120,6 +130,4 @@ public class Customer extends User {
     public void setTitle(String Title) {
         this.Title = Title;
     }
-    
-    
 }
