@@ -13,6 +13,7 @@ import com.bakerysystem.Daos.UserDao;
 import com.bakerysystem.Daos.UserDaoImpl;
 import com.bakerysystem.Model.Customer;
 import com.bakerysystem.Model.User;
+import java.util.ArrayList;
 
 /**
  *
@@ -48,13 +49,32 @@ public class CustomerServiceImpl implements CustomerService{
         return cust;
     }
 
-//    @Override
-//    public boolean passwordRecovery(String email) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-
     @Override
     public boolean updateCustomer(Customer cust) {
         return custD.updateCustomer(cust);
+    }
+
+    @Override
+    public boolean confirmEmail(String email) {
+        if(custD.getCustomerEmail(email) == null){
+            return false;
+        }    
+        ud.updatePassword(email,custD.generateOtp(email));
+        return true;
+    }
+
+    @Override
+    public ArrayList<Customer> getAllCustomers() {
+        return custD.getAllCustomers();
+    }
+
+    @Override
+    public Customer getCustomer(int customerId) {
+        return custD.getCustomer(customerId);
+    }
+
+    @Override
+    public boolean deleteCustomer(int customerId) {
+        return custD.removeCustomer(customerId);
     }
 }

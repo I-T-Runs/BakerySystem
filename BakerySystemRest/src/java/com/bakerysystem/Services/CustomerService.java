@@ -6,6 +6,7 @@
 package com.bakerysystem.Service;
 
 import com.bakerysystem.Model.Customer;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,8 +16,10 @@ public interface CustomerService {
     
     Customer registerCustomer(Customer cust);
     Customer login(String email, String password);
-    //boolean passwordRecovery(String email);
     boolean updateCustomer(Customer cust);
     boolean confirmEmail(String email);
+    ArrayList<Customer> getAllCustomers();
+    Customer getCustomer(int customerId);
+    boolean deleteCustomer(int customerId);
     
 }
