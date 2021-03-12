@@ -125,4 +125,21 @@ public class UserDaoImpl implements UserDao {
         }
         return listOfUsers;
     }
+
+    @Override
+    public boolean updatePassword(String email, String password) {
+         int check =0;
+       
+        try {
+            ps = myCon8.prepareStatement("UPDATE USERSTABLE SET PASSWORD = ? WHERE EMAIL = ?");
+            ps.setString(1, password);
+            ps.setString(2, email);
+            check = ps.executeUpdate();
+                    } catch (SQLException ex) {
+            Logger.getLogger(CustomerDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return (check == 1);
+    }
+    
 }
