@@ -75,12 +75,11 @@ public class CategoryDaoImpl implements CategoryDao {
     public Category getCategory(int categoeyID) {
         
         try {
-            ps = myCon3.prepareStatement("SELECT CATEGORYID, CATEGORYNAME FROM CATEGORYTABLE WHWRE CATEGORYID = ?");
+            ps = myCon3.prepareStatement("SELECT CATEGORYID, CATEGORYNAME FROM CATEGORYTABLE WHERE CATEGORYID = ?");
             ps.setInt(1, categoeyID);
             rs = ps.executeQuery();
             
             while(rs.next()){
-                
                 return new Category(rs.getInt("CATEGORYID"), rs.getString("CATEGORYNAME"));
             }
             
@@ -113,14 +112,13 @@ public class CategoryDaoImpl implements CategoryDao {
         int check = 0;
         
         try {
-            ps = myCon3.prepareStatement("UPDATE CATEGORYTABLE SET CATEGORYID = ? , CATEGORNAME = ?");
-            ps.setInt(1, cat.getCategoryID());
-            ps.setString(2, cat.getCategoryName());
+            ps = myCon3.prepareStatement("UPDATE CATEGORYTABLE SET CATEGORNAME = ? WHERE CATEGORYID = ?");
+            ps.setString(1, cat.getCategoryName());
+            ps.setInt(2, cat.getCategoryID());
             check = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (check == 1);
     }
-    
 }
