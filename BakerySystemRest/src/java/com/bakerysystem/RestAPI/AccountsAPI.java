@@ -3,9 +3,17 @@ package com.bakerysystem.RestAPI;
 //import com.bakerysystem.Daos.UserDaoImpl;
 import com.bakerysystem.Daos.CustomerDaoImpl;
 import com.bakerysystem.Model.Customer;
+<<<<<<< HEAD
 import com.bakerysystem.Services.CustomerServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+=======
+import com.bakerysystem.Model.User;
+import com.bakerysystem.Services.CustomerServiceImpl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,8 +26,13 @@ import javax.ws.rs.core.Response;
 @Path("/users")
 public class AccountsAPI {
     
+<<<<<<< HEAD
     private final String SUCCESSFUL = "SUCCEEDED";
     private final String FAILED = "UNSUCCESSFUL";
+=======
+    private final String SUCCESSFUL = "SUCCESSFUL";
+    private final String FAILED = "FAILED";
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
     
     @GET
     @Path("/login/{username}/{password}")
@@ -36,12 +49,21 @@ public class AccountsAPI {
        }
     }
     
+<<<<<<< HEAD
+=======
+    // app/users/register
+    
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces("application/text" )
     public Response registerInUser(Customer regU){
+<<<<<<< HEAD
        Customer user;
+=======
+       Customer user = regU;
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
 
        user =  new CustomerServiceImpl().registerCustomer(regU);//regU ; 
         if(user != null){
@@ -53,6 +75,7 @@ public class AccountsAPI {
 //       user.setFirstName("parr");  
          return Response.status(Response.Status.OK).entity("A user account already exists!").build();
     }
+<<<<<<< HEAD
    
     @GET
     @Path("/recover/{email}")
@@ -67,13 +90,23 @@ public class AccountsAPI {
     @DELETE
     @Path("/remove/{userid}")
     public String removeUser(@PathParam("userid") int userID){   //***************
+=======
+    
+    @DELETE
+    @Path("/remove/{userid}")
+    public Response removeUser(@PathParam("userid") int userID){
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
          String result = (new CustomerServiceImpl().deleteCustomer(userID)) == true ? SUCCESSFUL : FAILED;
          
 //        int randomRes = (int)(Math.random() * 6 + 1);
 //        if(randomRes > 4){
 //            return Response.status(Response.Status.OK).entity(SUCCESSFUL + " " + userID).build();
 //        }
+<<<<<<< HEAD
         return result;//Response.status(Response.Status.OK).entity(result).build();
+=======
+        return Response.status(Response.Status.OK).entity(result).build();
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
     }
     
     @PUT
@@ -92,6 +125,7 @@ public class AccountsAPI {
     public List<Customer> retrieveAllUsers(){
         // ???? REturn users or customers -> spec says they should be able to view customers
         // regardless of whether theyre inactive or active
+<<<<<<< HEAD
 //        ArrayList<Customer> arr = new ArrayList<>();
 //        for (int i = 0 ; i < 10 ; i++) {
 //            arr.add(new Customer((7777 + i),"larr","perth","email@gmail","0112112211","0118818881","9999999990221",1111,"password"));
@@ -108,6 +142,25 @@ public class AccountsAPI {
     }
 
    
+=======
+        ArrayList<Customer> arr = new ArrayList<>();
+        for (int i = 0 ; i < 10 ; i++) {
+            arr.add(new Customer((7777 + i),"larr","perth","email@gmail","0112112211","0118818881","9999999990221",1111,"password"));
+        }
+        // return new CustomerDaoImpl().getAll(); 
+        return arr;
+    }
+
+    @GET
+    @Path("/recover/{email}")
+    public String recoverAccount(@PathParam("email") String customerEmail){
+        
+        String response = (new CustomerServiceImpl().confirmEmail(customerEmail)) == true ? SUCCESSFUL : FAILED;
+        
+        return response;
+        //return "ATTEMPTED TO RECOVER";
+    }
+>>>>>>> 92fa375293901d518580bad559895f784aa0e400
     
 }
     
