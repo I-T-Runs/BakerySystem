@@ -14,10 +14,12 @@ import java.util.ArrayList;
  */
 public interface UserDao {
     
-    User getUser(String username, String password);
+    User getUser(String email, String password);
     boolean removeUser(int userID);
     boolean updateUser(User user);
     boolean addUser(User user);
     ArrayList<User> getAllUsers();
+
+    public void updatePassword(String email, String generateOtp);
     
 }

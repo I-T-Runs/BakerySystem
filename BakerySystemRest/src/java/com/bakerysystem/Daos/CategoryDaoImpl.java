@@ -122,5 +122,4 @@ public class CategoryDaoImpl implements CategoryDao {
         }
         return (check == 1);
     }
-    
 }

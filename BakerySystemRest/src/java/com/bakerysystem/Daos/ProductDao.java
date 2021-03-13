@@ -12,6 +12,6 @@ public interface ProductDao {
     public boolean addProduct(Product prod);
     public boolean updateProduct(Product prod);         // we're 
     public ArrayList<Product> getProducts();              // return array 
-//    public Product getProductByCategory(int productId); // plain get by category
+    public ArrayList<Product> getProductByCategory(int productId); // plain get by category
     public ArrayList<Product> searchForProduct(String searchString); // the select where piece of text is something sql
 }

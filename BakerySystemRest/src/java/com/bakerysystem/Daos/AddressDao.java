@@ -6,6 +6,7 @@
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.AddressClass;
+import java.util.ArrayList;
 /**
  *
  * @author keoagile
@@ -13,4 +14,9 @@ import com.bakerysystem.Model.AddressClass;
 public interface AddressDao {
     
     AddressClass getAddress(int addressID);
+    boolean addAddress(AddressClass address);
+    boolean removeAddress(int addressID);
+    boolean updateAddress(AddressClass address);
+    ArrayList<AddressClass> getAllAddresses();
+    
 }

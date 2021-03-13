@@ -1,12 +1,9 @@
 package com.bakerysystem.Model;
-
-import com.bakerysystem.Model.Order;
 import java.util.ArrayList;
 
-public class Customer extends User {
+public class Customer {
 
     private int customerId;
-    private String Title;
     private String firstName;
     private String lastName;
     private String email;
@@ -32,6 +29,20 @@ public class Customer extends User {
         this.ID = ID;
         this.addressId=addressID;
     }
+
+    public Customer(String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telephonehome = telephonehome;
+        this.telephonemobile = telephonemobile;
+        this.ID = ID;
+        this.addressId = addressId;
+        this.password = password;
+//        this.cart = cart;
+    }
+    
+    
 
     public int getCustomerId() {
         return customerId;
@@ -113,13 +124,7 @@ public class Customer extends User {
         this.cart = cart;
     }
 
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String Title) {
-        this.Title = Title;
-    }
+    
     
     
 }

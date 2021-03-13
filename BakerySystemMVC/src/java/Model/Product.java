@@ -1,9 +1,10 @@
-package Model;
+package com.bakerysystem.Model;
 
-import Model.Ingredient;
+import com.bakerysystem.Model.Ingredient;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product {
+public class Product implements Serializable {
 	private int productID ;
 	private String productName ; 
         private String photo;
@@ -34,12 +35,11 @@ public class Product {
                 setProductWarnings(productWarnings);
 	}
 
-    @Override
-    public String toString() {
-        return "Product{" + "productID=" + productID + ", productName=" + productName + ", photo=" + photo + ", categoryID=" + categoryID + ", recipeArr=" + recipeArr + ", currentlyAvailable=" + currentlyAvailable + ", price=" + price + ", actualPrice=" + actualPrice + ", discount=" + discount + ", productDescription=" + productDescription + ", productWarnings=" + productWarnings + '}';
-    }
-
-	
+	@Override
+	public String toString() {
+		return "Product [productID=" + productID + ", productName=" + productName + ", category=" + categoryID
+				+ ", currentlyAvailable=" + currentlyAvailable + "]";
+	}
     public int getProductID() {
         return productID;
     }
@@ -108,9 +108,9 @@ public class Product {
             this.actualPrice = actualPrice;
         }
 
-    public String getProductDescription() {
-        return productDescription;
-    }
+        public String getProductDescription() {
+            return productDescription;
+        }
 
         public void setProductDescription(String productDescription) {
             this.productDescription = productDescription;
@@ -123,4 +123,5 @@ public class Product {
     public void setProductWarnings(String productWarnings) {
         this.productWarnings = productWarnings;
     }
+        
 }

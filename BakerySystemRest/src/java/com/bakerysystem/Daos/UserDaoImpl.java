@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.User;
@@ -125,4 +121,11 @@ public class UserDaoImpl implements UserDao {
         }
         return listOfUsers;
     }
+
+    @Override
+    public void updatePassword(String email, String generateOtp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+  
 }

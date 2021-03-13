@@ -51,7 +51,7 @@ public class CartDaoImpl implements CartDao {
         
         try {
             for(int i =0; i <cart.getProducts().size(); i++){
-            ps = myCon10.prepareStatement("INSERT INTO CARTTABLE(CARTID,CUSTOMERID,PRODUCTID,QUANTITY) VALUES(NULL,?,?,?,'ACTIVE')");
+            ps = myCon10.prepareStatement("INSERT INTO CARTTABLE(CARTID,CUSTOMERID,PRODUCTID,QUANTITY,ACTIVITY) VALUES(NULL,?,?,?,'ACTIVE')");
             ps.setInt(1, cart.getCustomerId());
             ps.setInt(2, cart.getProducts().get(i).getProductID());
             ps.setInt(3, cart.getProducts().get(i).getQuantity());
@@ -61,5 +61,29 @@ public class CartDaoImpl implements CartDao {
             Logger.getLogger(CartDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return (check == cart.getProducts().size());
+    }
+
+    @Override
+    public Cart getCart(int customerID) {
+       int cartId = 0;
+       ArrayList<ProductLineItem> prods =new ArrayList();
+       
+        try {
+            ps = myCon10.prepareStatement("SELECT CARTID, PRODUCTID, PRODUCTNAME, QUANTITY WHERE CUSTOMERID = ? AND WHERE ACTIVITY = 'ACTIVE'");
+            ps.setInt(1, customerID);
+            rs = ps.executeQuery();
+     
+            while(rs.next()){
+                cartId = rs.getInt("CARTID");
+                prods.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY")));
+            }
+            if(!prods.isEmpty()){
+                
+                return new Cart(customerID, prods, cartId);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return new Cart(customerID,cartId);
     }
 }

@@ -1,4 +1,4 @@
-package Model;
+package com.bakerysystem.Model;
 
 
 import java.util.ArrayList;
