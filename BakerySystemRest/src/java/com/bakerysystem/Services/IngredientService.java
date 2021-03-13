@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bakerysystem.Daos;
+package com.bakerysystem.Services;
 
 import com.bakerysystem.Model.Ingredient;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.ArrayList;
  *
  * @author keoagile
  */
-public interface IngredientDao {
-   
-    Ingredient getIngredient(int ingredientID);
-    boolean addIngredient(Ingredient ingred);
-    boolean updateIngredient(Ingredient ingred);
-    boolean removeInggredient(int ingredientID);
+public interface IngredientService {
+    
+    Ingredient getIngredient(int ingredientId);
+    boolean addIngredient(Ingredient ingredient);
+    boolean deleteIngredient(int ingredientId);
+    boolean updateIngredient(Ingredient ingredient);
     ArrayList<Ingredient> getAllIngredients();
 }

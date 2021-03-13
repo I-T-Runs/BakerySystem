@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bakerysystem.Daos;
+package com.bakerysystem.Services;
 
 import com.bakerysystem.Model.Category;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.ArrayList;
  *
  * @author keoagile
  */
-public interface CategoryDao {
+public interface CategoryService {
     
-   boolean addCategory(Category cat);
-   boolean removeCategory(int categoryID);
-   Category getCategory(int categoeyID);
-   ArrayList<Category> getAllCategories();
-   boolean updateCategory(Category cat);
+    ArrayList<Category> getAllCategories();
+    boolean addCategory(Category category);
+    Category getCategory(int categoryId);
+    boolean deleteCategory(int categoryId);
+    boolean updateCategory(Category category);
 }

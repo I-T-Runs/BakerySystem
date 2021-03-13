@@ -69,7 +69,8 @@ public class CartDaoImpl implements CartDao {
        ArrayList<ProductLineItem> prods =new ArrayList();
        
         try {
-            ps = myCon10.prepareStatement("SELECT CARTID, PRODUCTID, PRODUCTNAME, QUANTITY WHERE CUSTOMERID = ? AND WHERE ACTIVITY = 'ACTIVE'");
+            //ps = myCon10.prepareStatement("SELECT CARTID, PRODUCTID, PRODUCTNAME, QUANTITY WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
+            ps = myCon10.prepareStatement("SELECT CARTID, PRODUCTID, QUANTITY FROM CARTTABLE WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
             ps.setInt(1, customerID);
             rs = ps.executeQuery();
      

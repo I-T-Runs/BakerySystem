@@ -6,6 +6,7 @@
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.Customer;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,4 +15,10 @@ import com.bakerysystem.Model.Customer;
 public interface CustomerDao {
     
     boolean addCustomer(Customer cust);
+    Customer getCustomer(int custerID);
+    boolean updateCustomer(Customer cust);
+    ArrayList<Customer> getAllCustomers();
+    boolean removeCustomer(int customerId);
+    String getCustomerEmail(String email);
+    String generateOtp(String email);
 }
