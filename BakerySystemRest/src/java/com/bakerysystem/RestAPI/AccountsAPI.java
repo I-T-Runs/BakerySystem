@@ -3,11 +3,9 @@ package com.bakerysystem.RestAPI;
 //import com.bakerysystem.Daos.UserDaoImpl;
 import com.bakerysystem.Daos.CustomerDaoImpl;
 import com.bakerysystem.Model.Customer;
-import com.bakerysystem.Model.User;
 import com.bakerysystem.Services.CustomerServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -68,14 +66,14 @@ public class AccountsAPI {
     
     @DELETE
     @Path("/remove/{userid}")
-    public Response removeUser(@PathParam("userid") int userID){   //***************
+    public String removeUser(@PathParam("userid") int userID){   //***************
          String result = (new CustomerServiceImpl().deleteCustomer(userID)) == true ? SUCCESSFUL : FAILED;
          
 //        int randomRes = (int)(Math.random() * 6 + 1);
 //        if(randomRes > 4){
 //            return Response.status(Response.Status.OK).entity(SUCCESSFUL + " " + userID).build();
 //        }
-        return Response.status(Response.Status.OK).entity(result).build();
+        return result;//Response.status(Response.Status.OK).entity(result).build();
     }
     
     @PUT
@@ -94,12 +92,19 @@ public class AccountsAPI {
     public List<Customer> retrieveAllUsers(){
         // ???? REturn users or customers -> spec says they should be able to view customers
         // regardless of whether theyre inactive or active
-        ArrayList<Customer> arr = new ArrayList<>();
-        for (int i = 0 ; i < 10 ; i++) {
-            arr.add(new Customer((7777 + i),"larr","perth","email@gmail","0112112211","0118818881","9999999990221",1111,"password"));
-        }
-        // return new CustomerDaoImpl().getAll(); 
-        return arr;
+//        ArrayList<Customer> arr = new ArrayList<>();
+//        for (int i = 0 ; i < 10 ; i++) {
+//            arr.add(new Customer((7777 + i),"larr","perth","email@gmail","0112112211","0118818881","9999999990221",1111,"password"));
+//        }
+        return new CustomerDaoImpl().getAllCustomers(); 
+//        return arr;
+    }
+    
+    @GET
+    @Path("/user/{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Customer retrieveUser(@QueryParam("userid") int userid){
+        return new CustomerDaoImpl().getCustomer(userid); 
     }
 
    
