@@ -63,11 +63,7 @@ public class CustomerDaoImpl implements CustomerDao {
     public Customer getCustomer(int userId) {
        
         try {
-<<<<<<< HEAD
             ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD FROM CUSTOMERTABLE WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
-=======
-            ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD WHERE CUSTOMERIDD = ? AND ACTIVITY = 'ACTIVE'");
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
             ps.setInt(1, userId);
             rs = ps.executeQuery();
         
@@ -111,11 +107,7 @@ public class CustomerDaoImpl implements CustomerDao {
         ArrayList<Customer> listofcustomers = new ArrayList();
         
         try {
-<<<<<<< HEAD
             ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD FROM CUSTOMERTABLE");
-=======
-            ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD");
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
             rs = ps.executeQuery();
             
             while(rs.next()){
@@ -133,11 +125,7 @@ public class CustomerDaoImpl implements CustomerDao {
         int check = 0;
         
         try {
-<<<<<<< HEAD
             ps = myCon30.prepareStatement("UPDATE CUSTOMERTABLE SET ACTIVITY = 'INACTIVE' WHERE CUSTOMERID = ?");
-=======
-            ps = myCon30.prepareStatement("UPDATE CUSTOMERTABLE SET ACTIVITY = 'INACTIVE' WHERE CUSTOMEID = ?");
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
             ps.setInt(1, customerId);
             check = ps.executeUpdate();
         } catch (SQLException ex) {

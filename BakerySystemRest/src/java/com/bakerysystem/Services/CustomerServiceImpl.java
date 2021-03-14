@@ -41,16 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
         ud.addUser(new User(cust.getEmail(), cust.getPassword(), "CUSTOMER"));
         return cust;
     }
-<<<<<<< HEAD
- 
-=======
-
-    public static void main(String[] args) {
-        Customer c = new CustomerServiceImpl().registerCustomer(new Customer("larr" + 0, "perth" + 0, "email@gmail", "0112112211", "0118818881", "1111111" + (102210 + 0) + "", 1111, "password"));
-        System.out.println(c.getFirstName());
-    }
-
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
     @Override
     public Customer login(String email, String password) {
         Customer cust = custD.getCustomer(ud.getUser(email, password).getUserId());
@@ -76,11 +66,6 @@ public class CustomerServiceImpl implements CustomerService {
         ud.updatePassword(email, custD.generateOtp(email));
         return true;
     }
-<<<<<<< HEAD
-    
-   
-=======
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
 
     @Override
     public ArrayList<Customer> getAllCustomers() {
@@ -96,14 +81,10 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean deleteCustomer(int customerId) {
         return custD.removeCustomer(customerId);
     }
-<<<<<<< HEAD
-
-     public static void main(String[] args) {
+     
+    public static void main(String[] args) {
         boolean res = new CustomerServiceImpl().deleteCustomer(12);
         System.out.println(res);
     }
 
-
-=======
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
 }

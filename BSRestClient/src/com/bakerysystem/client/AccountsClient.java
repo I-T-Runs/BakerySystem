@@ -35,7 +35,7 @@ public class AccountsClient {
 //            map.put("password", password);
 //            WebTarget webTarget = client.target(URL + "login/{username}/{password}").resolveTemplate(map.keySet(),map.values());
 //            //  "http://localhost:8080/BakerySystemRest/app/"
-            WebTarget webTarget = client.target("http://localhost:8080/BakerySystemRest/app/users/" + "login/" + username + "/" + password);
+            WebTarget webTarget = client.target(URL + "login/" + username + "/" + password);
 
             
             System.out.println("Fetching User...");

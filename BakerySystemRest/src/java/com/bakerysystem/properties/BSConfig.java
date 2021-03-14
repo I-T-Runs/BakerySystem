@@ -79,11 +79,9 @@ public class BSConfig {
 
     public static void main(String[] args) {
         // testing
-<<<<<<< HEAD
+
         BSConfig config = new BSConfig("localhost", 8080, "localhost");
-=======
-        BSConfig config = new BSConfig("192.22.3.2", 8080, "199.23.11.2");
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
+
         System.out.println(config);
     }
 }

@@ -123,11 +123,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-<<<<<<< HEAD
     public void updatePassword(String email, String generateOtp) { // ********************** check
-=======
-    public void updatePassword(String email, String generateOtp) {
->>>>>>> 92fa375293901d518580bad559895f784aa0e400
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
