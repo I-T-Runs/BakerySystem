@@ -58,25 +58,25 @@ public class CustomerDaoImpl implements CustomerDao {
         }
         return (check == 1);
     }
-
+    
     @Override
     public Customer getCustomer(int userId) {
        
         try {
-            ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD FROM CUSTOMERTABLE WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
+            ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD "
+                                        + "FROM CUSTOMERTABLE "
+                                        + "WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
         
               
-            while(rs.next()){
+            if(rs.next()){
                 return new Customer(rs.getInt("CUSTOMERID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), rs.getString("EMAIL"), rs.getString("TELEPHONEHOME"), rs.getString("TELEPHONEMOBILE"), rs.getString("ID"), rs.getInt("ADDRESSID"), rs.getString("PASSWORD")); 
             }
             
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-      
         return null;
     }
 

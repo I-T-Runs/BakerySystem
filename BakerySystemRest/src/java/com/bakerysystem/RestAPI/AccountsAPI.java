@@ -106,9 +106,9 @@ public class AccountsAPI {
     }
     
     @GET
-    @Path("/user/{userid}")
+    @Path("/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer retrieveUser(@QueryParam("userid") int userid){
+    public Customer retrieveUser(@PathParam("id") int userid){
         return new CustomerDaoImpl().getCustomer(userid); 
     }    
 }

@@ -41,6 +41,11 @@ public class Customer {
         this.password = password;
 //        this.cart = cart;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", telephonehome=" + telephonehome + ", telephonemobile=" + telephonemobile + ", ID=" + ID + ", addressId=" + addressId + ", password=" + password + ", cart=" + cart + '}';
+    }
     
     
 

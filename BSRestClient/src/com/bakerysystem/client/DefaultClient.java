@@ -37,10 +37,10 @@ public class DefaultClient <T> {
         return responseRes;
     }
     
-     //   Create : CHECKED | Retrieve : _all__|_1?_ : ALMOST | Update : CHECKED | Delete : CHECKED        
+     //   Create : CHECKED | Retrieve : _all__|_1_ : CHECKED | Update : CHECKED | Delete : CHECKED        
     public static void main(String [] agr){
        DefaultClient dc = new DefaultClient<>("users");
-       String response = dc.getAll("accounts").toString();//.get(17, "user/{id}").toString();//.create(new Customer("Themba", "Ndwandwe", "themba.ndwandwe@yahoo.com", "NA", "0823527###", "#############", 101, "password"), "register"); //.remove(14, "remove/{id}");//.update(new Customer(8, "first", "last", "email@something.com", "tel-home", "mobile-no", "identityNo", 0, "password"), "editdetails");
+       String response = dc.get(17, "user/{id}").toString();//.getAll("accounts").toString();//.get(17, "user/{id}").toString();//.create(new Customer("Themba", "Ndwandwe", "themba.ndwandwe@yahoo.com", "NA", "0823527###", "#############", 101, "password"), "register"); //.remove(14, "remove/{id}");//.update(new Customer(8, "first", "last", "email@something.com", "tel-home", "mobile-no", "identityNo", 0, "password"), "editdetails");
        System.out.println(response);
     }
     
@@ -68,12 +68,14 @@ public class DefaultClient <T> {
     public   T get(int objID, String methodPath) {
         try {
             Client client = ClientBuilder.newClient();
-            WebTarget webTarget = client.target(URL + methodPath);
+            WebTarget webTarget = client.target(URL + methodPath).resolveTemplate("id", objID);
 
             
             System.out.println("Fetching User...");
             String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 
+            System.out.println(s);
+            
             ObjectMapper ob = new ObjectMapper();
             T obj =  (T) ob.readValue(s, Object.class);
 

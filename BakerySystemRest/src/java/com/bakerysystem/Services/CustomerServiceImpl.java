@@ -83,8 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
      
     public static void main(String[] args) {
-        boolean res = new CustomerServiceImpl().deleteCustomer(12);
-        System.out.println(res);
+        System.out.println(new CustomerServiceImpl().getCustomer(17));
     }
 
 }
