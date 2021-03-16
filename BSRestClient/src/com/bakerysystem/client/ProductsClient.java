@@ -1,12 +1,24 @@
 package com.bakerysystem.client;
 
+import Model.Category;
 import Model.Product;
 import com.bakerysystem.extraz.Helper;
 import com.bakerysystem.properties.BSConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.awt.Image;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -19,71 +31,34 @@ import javax.ws.rs.core.Response;
  * @author Themba
  */
 public class ProductsClient {
-    private static String url;
-    public ProductsClient(){
-        url = new BSConfig().getURL("products");
-    }
-    
-    public static ArrayList<Product> recieveProducts() {
-        ArrayList<Product> catalogue = null;
-        Product [] products = null;
-        try {            
-            Client restClient = ClientBuilder.newClient();
-            WebTarget webTarget = restClient.target(url + "catalogue");
-            System.out.println("Fetching Products...");
-            
-            ObjectMapper ob = new ObjectMapper();
-            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
-            
-            System.out.println(s+"\n");
-            products = ob.readValue(s, Product[].class) ;
-//            System.out.println("RETURNED :\n " + prod);
-            catalogue = new ArrayList(Arrays.asList(products));    
-            
-        } catch (Exception ex) {
-            System.out.println("ERROR: Couldn't get products");
-        }
-        
-        
-        return catalogue;
-    }
-    
-    public static Product recieveProduct(int productID) {
-        Product prod = null;
-        try {
-            Client client = ClientBuilder.newClient();
-            WebTarget webTarget = client.target(url + "product/{productid}").resolveTemplate("productid", productID);
-            System.out.println("Fetching Product...");
-            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
-            
-            ObjectMapper ob = new ObjectMapper();
-            prod = ob.readValue(s,Product.class);
-           
-            System.out.println("Fetch successfull");
-        } catch (IOException ex) {
-            System.out.println("ERROR: Couldn't get product\n" + ex.getMessage());
-        }
-        return prod;
-    }
-    
-    public static String addProduct(Product newProd) {
-        Response generatedResponse = null;
-        try {
-            Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(url+"register");
-            
-            Product prod = newProd;
-          
-            Response r = target.request().post(Entity.json(Helper.convert2Json(prod))); 
-            return r.getEntity().toString();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null ;
+
+    private final static String URL = new BSConfig().getURL("shop");
+    private DefaultClient<Product> dc;
+
+    public ProductsClient() {
+        dc = new DefaultClient<>("products");
     }
 
-    public static void main(String [] args){
-        System.out.println(new ProductsClient().recieveProduct(65465));
+    public String addCategory(Product prod) {
+        return dc.create(prod, "add");
     }
+
+    public Product getProduct(int prodid) {
+        return dc.get(prodid, "product/{id}");
+    }
+
+    public String remove(int prodId) {
+        return dc.remove(prodId, "remove");
+    }
+
+    public String updateDetails(Product prod) {
+        return dc.update(prod, "edit");
+    }
+
+    public ArrayList<Product> getAllProducts() {
+        return dc.getAll("all-products");
+    }
+
+    // CSS - URL
+    // URL(52.233.233:doata/images/j.jpg
 }

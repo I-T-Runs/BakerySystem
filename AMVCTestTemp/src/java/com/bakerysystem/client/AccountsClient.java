@@ -3,9 +3,11 @@ package com.bakerysystem.client;
 import Model.Customer;
 import com.bakerysystem.extraz.Helper;
 import com.bakerysystem.properties.BSConfig;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -19,11 +21,10 @@ import javax.ws.rs.core.Response;
 public class AccountsClient {
 
     private final static String URL = new BSConfig().getURL("users");
-    private DefaultClient<Customer> dc;
-    
-    
+
     public AccountsClient() {
-            dc = new DefaultClient<>("users");        
+        System.out.println(URL);
+        
     }
 
     public   Customer login(String username, String password) {
@@ -69,7 +70,7 @@ public class AccountsClient {
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target("http://localhost:8080/BakerySystemRest/app/users/register");//client.target(URL + "register");
 
-            Response r = target.request().post(Entity.json(Helper.convert2Json(newUser)));//post(Entity.json(Helper.convert2Json(newUser)));
+            Response r = target.request().post(Entity.json(convert2Json(newUser)));//post(Entity.json(Helper.convert2Json(newUser)));
             
             System.out.println("\n [" + r.getEntity() + "\n");
             System.out.println("--------------------------------------");
@@ -88,29 +89,75 @@ public class AccountsClient {
         }
         return null;
     }
+    
+    public String convert2Json(Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (JsonProcessingException ex) {
+            ex.getMessage();
+        }
+        return null;
+    }
 
-    public String addAdmin(Customer admin){
-        return dc.create(admin, "add");
-    }
-    
-    public Customer getAccount(int userid) {
-       return dc.get(userid, "user/{id}");
-    }
-    
     public   String remove(int userId) {
-        return dc.remove(userId, "remove");
+        Response generatedResponse = null;
+        String s = "";
+        try {
+            Client client = ClientBuilder.newClient();
+            WebTarget webTarget = client.target(URL + "remove/{userid}").resolveTemplate("userid", userId);
+
+            generatedResponse = webTarget.request().accept("application/json").delete();
+            s = generatedResponse.readEntity(String.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
     }
     
+   
+
     public String updateDetails(Customer cus) {
-        return dc.update(cus, "update");
+        //             ADD OR CHANGE MAIN ADDRESS
+        //             EDIT PERSONAL DETAILS
+
+        Response generatedResponse = null;
+        String s = "";
+        try {
+            Client client = ClientBuilder.newClient();
+            WebTarget webTarget = client.target(URL + "editdetails");
+
+            generatedResponse = webTarget.request().put(Entity.json(Helper.convert2Json(cus)));
+            s = generatedResponse.readEntity(String.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 
-    public   ArrayList<Customer> getAllAccounts() {    
-        return dc.getAll("accounts");
+    public   ArrayList<Customer> getAllAccounts() {
+        ArrayList<Customer> catalogue = null;
+        Customer[] users = null;
+        try {
+            Client restClient = ClientBuilder.newClient();
+            WebTarget webTarget = restClient.target(URL + "accounts");
+
+            ObjectMapper ob = new ObjectMapper();
+            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+
+            System.out.println(s + "\n");
+            users = ob.readValue(s, Customer[].class);
+            catalogue = new ArrayList(Arrays.asList(users));
+
+        } catch (Exception ex) {
+            System.out.println("ERROR: Couldn't get users");
+        }
+
+        return catalogue;
     }
 
      public static void main(String[] args) {
-         System.out.println(new AccountsClient().getAccount(17));
 //String s = new AccountsClient().getAllAccounts().toString();
 //        String s = new AccountsClient().updateDetails(new Customer(16, "firstname", "lastname", "email", "tel-home", "mobile-no", "identityNo", 0, "password")); // 
 //        String s = new AccountsClient().remove(13); // 
@@ -125,5 +172,37 @@ public class AccountsClient {
         
     }
     
+     // check
+    public Customer getAccount(int userid) {
+       Customer cus = null;
+        try {
+            Client restClient = ClientBuilder.newClient();
+            WebTarget webTarget = restClient.target(URL + "user/"+userid);//.resolveTemplate("userid", userid);
+
+            ObjectMapper ob = new ObjectMapper();
+            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+
+            System.out.println(s + "\n");
+            cus = (Customer) ob.readValue(s, Customer.class);
+
+        } catch (IOException ex) {
+            System.out.println("ERROR: Couldn't get customer"); //+ ex.getMessage());
+        }
+        return cus;
+    }
+
+    
 }
 
+/*
+
+Allow registered customers to recover their password and username/email via email.
+
+Allow customers to update/edit their account information.
+
+Allow customers to view their account’s cart.
+
+Allow customers to view their orders placed.
+evident
+
+ */
