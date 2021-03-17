@@ -3,29 +3,13 @@
     Created on : 08 Mar 2021, 8:55:43 AM
     Author     : David
 --%>
-<%@page import="com.bakerysystem.client.ProductsClient"%>
-<%@page import="com.bakerysystem.Model.Customer"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.util.ArrayList"%>
-<%@page import="com.bakerysystem.Model.Product"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <!-- Tags -->
-    <editor-fold defaultstate="collapsed" desc="Objects">
-
-        <jsp:useBean id="customerlogin" class="com.bakerysystem.Model.Customer" scope="application">
-
-        </jsp:useBean>
-
-        <jsp:useBean id="cart" class="com.bakerysystem.Model.Cart" scope="application">
-
-        </jsp:useBean>
-
-    </editor-fold>
     <head>
     <editor-fold defaultstate="collapsed" desc="Sign In">
-        <title>The Dough Knot G</title>
+        <title>The Dough Knot C</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -62,7 +46,7 @@
 </head>
 <body>
     <!-- Navbar (sit on top) -->
-<editor-fold defaultstate="collapsed" desc="">
+<editor-fold defaultstate="collapsed" desc="Sign In">
     <div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
             <div class="w3-bar-item w3-button w3-wide">
@@ -80,18 +64,21 @@
                     <a href="#cart" onclick ="openCart()" class="w3-bar-item w3-button"><i class="fa fa-cart-arrow-down"></i> CART</a>
                     <div id="carrt" class="w3-dropdown-content w3-bar-block w3-border" style="width: 200%">
                         <a href="javascript:void(0)" onclick="openCart()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-
+                        <p><a href="#">Product 1</a> <span class="price">Rx</span></p>
+                        <p><a href="#">Product 2</a> <span class="price">Rx</span></p>
+                        <p><a href="#">Product 3</a> <span class="price">Rx</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">Rx</span></p>
                         <p>Total <span class="price" style="color:black"><b>Rx</b></span></p>
                         </br>
                         <button class="w3-button w3-brown w3-mobile" onclick="document.getElementById('conforderf').style.display = 'block'" style="width:auto;">Proceed to Checkout</button>
                     </div>
                 </div>
+                <a class="w3-bar-item w3-button">WELCOME <%=session.getAttribute("firstname")%>!</a> 
                 <div class="w3-dropdown-click">
                     <a href="#account" onclick="openAccount()" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i>ACCOUNT</a>
                     <div id="acco" class="w3-dropdown-content w3-bar-block w3-border">
                         <a href="javascript:void(0)" onclick="openAccount()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-                        <a href="#" class="w3-bar-item w3-button" onclick="document.getElementById('signinf').style.display = 'block'">Sign In</a>
-                        <a href="#" class="w3-bar-item w3-button" onclick="document.getElementById('signinf').style.display = 'block'">My Account</a>
+                        <a href="#" class="w3-bar-item w3-button" onclick="window.location = 'account.jsp'">My Account</a>
                         <a href="#" class="w3-bar-item w3-button" onclick="document.getElementById('signinf').style.display = 'block'">View Order History</a>
                         <a href="#" class="w3-bar-item w3-button" onclick="document.getElementById('signinf').style.display = 'block'">Log Out</a>
                     </div>
@@ -99,7 +86,6 @@
             </div>
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
             <i class="fa fa-bars"></i>
         </a>
@@ -129,10 +115,10 @@
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
         <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
-        <a href="#categories" onclick="w3_close()" class="w3-bar-item w3-button">CATEGORIES</a>
+        <a href="#categroies" onclick="w3_close()" class="w3-bar-item w3-button">CATEGORIES</a>
         <a href="#shop" onclick="w3_close()" class="w3-bar-item w3-button">SHOP</a>
         <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
-        <a href="" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> ACCOUNT</a>
+        <a href="#account" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> ACCOUNT</a>
         <a href="#cart" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CART</a>
     </nav>
 
@@ -154,23 +140,23 @@
         </div>
     </header>
 </editor-fold>
-<!-- Login Form -->
-<editor-fold defaultstate="collapsed" desc="login">
+<!-- Sign In Form -->
+<editor-fold defaultstate="collapsed" desc="Sign In">
     <div id="signinf" class="modal">
-        <form class="modal-content animate" action="j_security_check" method="POST">
+        <form class="modal-content animate" action="indexCS.jsp" method="post">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('signinf').style.display = 'none'" class="close" title="Close Modal">&times;</span>
                 <h2>Sign In!</h2>
             </div>
 
             <div class="w3-container">
-                <label for="uname"><b>Email</b></label>
-                <input type="text" placeholder="Enter Username" name="j_username" required>
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="j_password" required>
+                <input type="password" placeholder="Enter Password" name="psw" required>
 
-                <button type="button" type="submit" value="Login">Login</button>
+                <button type="button" type="submit">Login</button>
 
                 <button type="button" onclick="document.getElementById('signupf').style.display = 'block'">Sign Up</button>
 
@@ -178,160 +164,125 @@
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
-                <span class="psw">Forgot <a onclick="document.getElementById('pwrec').style.display = 'block'">password?</a></span>
+                <span class="psw">Forgot <a href="#">password?</a></span>
             </div>
         </form>
     </div>
-    <editor-fold defaultstate="collapsed" desc="Styles">
-        <style>
-            body {font-family: Arial, Helvetica, sans-serif;}
-            * {box-sizing: border-box;}
 
-            /* Full-width input fields */
-            input[type=text], input[type=password] {
-                width: 100%;
-                padding: 15px;
-                margin: 5px 0 22px 0;
-                display: inline-block;
-                border: none;
-                background: #f1f1f1;
-            }
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        * {box-sizing: border-box;}
 
-            /* Add a background color when the inputs get focus */
-            input[type=text]:focus, input[type=password]:focus {
-                background-color: #ddd;
-                outline: none;
-            }
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
 
-            /* Set a style for all buttons */
-            button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-                opacity: 0.9;
-            }
+        /* Add a background color when the inputs get focus */
+        input[type=text]:focus, input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
 
-            button:hover {
-                opacity:1;
-            }
+        /* Set a style for all buttons */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
 
-            /* Extra styles for the cancel button */
-            .cancelbtn {
-                padding: 14px 20px;
-                background-color: #f44336;
-            }
+        button:hover {
+            opacity:1;
+        }
 
-            /* Float cancel and signup buttons and add an equal width */
+        /* Extra styles for the cancel button */
+        .cancelbtn {
+            padding: 14px 20px;
+            background-color: #f44336;
+        }
+
+        /* Float cancel and signup buttons and add an equal width */
+        .cancelbtn, .signupbtn {
+            float: left;
+            width: 50%;
+        }
+
+        /* Add padding to container elements */
+        .container {
+            padding: 16px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 3; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: #474e5d;
+            padding-top: 50px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 40%; /* Could be more or less, depending on screen size */
+        }
+
+        /* Style the horizontal ruler */
+        hr {
+            border: 1px solid #f1f1f1;
+            margin-bottom: 25px;
+        }
+
+        /* The Close Button (x) */
+        .close {
+            position: absolute;
+            right: 35px;
+            top: 15px;
+            font-size: 40px;
+            font-weight: bold;
+            color: #f1f1f1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #f44336;
+            cursor: pointer;
+        }
+
+        /* Clear floats */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        /* Change styles for cancel button and signup button on extra small screens */
+        @media screen and (max-width: 300px) {
             .cancelbtn, .signupbtn {
-                float: left;
-                width: 50%;
+                width: 100%;
             }
-
-            /* Add padding to container elements */
-            .container {
-                padding: 16px;
-            }
-
-            /* The Modal (background) */
-            .modal {
-                display: none; /* Hidden by default */
-                position: fixed; /* Stay in place */
-                z-index: 3; /* Sit on top */
-                left: 0;
-                top: 0;
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
-                overflow: auto; /* Enable scroll if needed */
-                background-color: #474e5d;
-                padding-top: 50px;
-            }
-
-            /* Modal Content/Box */
-            .modal-content {
-                background-color: #fefefe;
-                margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-                border: 1px solid #888;
-                width: 40%; /* Could be more or less, depending on screen size */
-            }
-
-            /* Style the horizontal ruler */
-            hr {
-                border: 1px solid #f1f1f1;
-                margin-bottom: 25px;
-            }
-
-            /* The Close Button (x) */
-            .close {
-                position: absolute;
-                right: 35px;
-                top: 15px;
-                font-size: 40px;
-                font-weight: bold;
-                color: #f1f1f1;
-            }
-
-            .close:hover,
-            .close:focus {
-                color: #f44336;
-                cursor: pointer;
-            }
-
-            /* Clear floats */
-            .clearfix::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
-
-            /* Change styles for cancel button and signup button on extra small screens */
-            @media screen and (max-width: 300px) {
-                .cancelbtn, .signupbtn {
-                    width: 100%;
-                }
-            }
-        </style>
-
-        <script>
-            // Get the modal
-            var modal = document.getElementById('signinf');
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        </script>
-    </editor-fold>
-</editor-fold>
-<!-- Password Recovery Form -->
-<editor-fold defaultstate="collapsed" desc="Sign Up">
-    <div id="pwrec" class="modal">
-
-        <form class="modal-content animate" action="recovery" method="post">
-            <div class="imgcontainer">
-                <span onclick="document.getElementById('pwrec').style.display = 'none'" class="close" title="Close Modal">&times;</span>
-                <h2>Password Recovery!</h2>
-            </div>
-
-            <div class="w3-container">
-                <label for="psw"><b>Email Address</b></label>
-                <input type="text" placeholder="Enter Email" name="ue" required>
-
-                <button type="submit" >Recover Password</button>
-
-                <button type="button" onclick="document.getElementById('pwrec').style.display = 'none'">Cancel</button>
-            </div>
-        </form>
-    </div>
-
+        }
+    </style>
     <script>
         // Get the modal
-        var modal = document.getElementById('signupf');
+        var modal = document.getElementById('signinf');
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
@@ -341,39 +292,39 @@
         }
     </script>
 </editor-fold>
-<!-- Registration Form -->
+<!-- Sign Up Form -->
 <editor-fold defaultstate="collapsed" desc="Sign Up">
     <div id="signupf" class="modal">
 
-        <form id="Sign Up" class="modal-content animate" action="register" method="POST">
+        <form class="modal-content animate" action="indexCS.jsp" method="post">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('signupf').style.display = 'none'" class="close" title="Close Modal">&times;</span>
                 <h2>Sign Up!</h2>
             </div>
 
             <div class="w3-container">
-                <label for="fn"><b>First Name</b></label>
-                <input type="text" placeholder="Enter Username" name="firstName" required>
+                <label for="uname"><b>First Name</b></label>
+                <input type="text" placeholder="Enter Username" name="fn" required>
 
-                <label for="ln"><b>Last Name</b></label>
-                <input type="text" placeholder="Enter Username" name="lastName" required>
+                <label for="uname"><b>Last Name</b></label>
+                <input type="text" placeholder="Enter Username" name="ln" required>
 
-                <label for="em"><b>Email Address</b></label>
-                <input type="text" placeholder="Enter Password" name="email" required>
+                <label for="psw"><b>Email Address</b></label>
+                <input type="text" placeholder="Enter Password" name="ue" required>
 
-                <label for="cn"><b>Contact Number</b></label>
-                <input type="text" placeholder="Enter Password" name="telephonemobile" required>
+                <label for="psw"><b>Contact Number</b></label>
+                <input type="text" placeholder="Enter Password" name="cn" required>
 
-                <label for="da"><b>Delivery Address</b></label>
+                <label for="psw"><b>Delivery Address</b></label>
                 <input type="text" placeholder="Enter Password" name="da" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
+                <input type="password" placeholder="Enter Password" name="pass" required>
 
-                <button type="submit" onclick="document.getElementById('indexCS.jsp').style.display = 'none'">Sign Up</button>
+                <button type="submit">Sign Up</button>
 
                 <button type="button" onclick="document.getElementById('signupf').style.display = 'none'" class="">Cancel</button>
-
+                <span class="psw">Forgot <a href="#">password?</a></span>
             </div>
         </form>
     </div>
@@ -409,6 +360,7 @@
         </form>
 
         <style>
+
 
             .container {
                 background-color: #f2f2f2;
@@ -540,7 +492,7 @@
             <label>
                 <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
             </label>
-            <input type="submit" onclick="document.getElementById('signupf').style.display = 'block'" value="Make Payment" class="btn">
+            <input type="submit" onclick="document.getElementById('payment').style.display = 'block'" value="Make Payment" class="btn">
         </form>
         <style>
             * {
@@ -1136,106 +1088,95 @@
 </editor-fold>
 <!-- SHOP -->
 <editor-fold defaultstate="collapsed" desc="Cart">
-    <% ArrayList<Product> prodArr = (ArrayList<Product>) getServletContext().getAttribute("ProductArr"); %>
-
     <div class="w3-row w3-mobile " >
         <h3 class="w3-center"style="padding:64px 16px" id="shop">Shop</h3>
-        <% for (int j = 0; j < prodArr.size();) {%>
         <div class="w3-col l3 s6" >
-            <%Product p1 = prodArr.get(j);%>
-            <div class="w3-container">
+            <div class="w3-container" >
                 <div class="w3-display-container">
-                    <img src="<%=p1.getPhoto()%>" style="width:100%">
+                    <img src="Images/croissant.jpg" style="width:100%">
                     <div class="w3-display-middle w3-display-hover">
                         <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
                     </div>
                 </div>
-                <p>  <br><b><%= p1.getPrice()%></b></p>
+                <p>  <br><b>$24.99</b></p>
             </div>
-            <% j++; %>
-            <% if (j < prodArr.size()) {%>
-            <%p1 = prodArr.get(j);%>
             <div class="w3-container">
                 <div class="w3-display-container">
-                    <img src="<%p1.getPhoto();%>" style="width:100%">
+                    <img src="Images/lamear.jpg" style="width:100%">
                     <div class="w3-display-middle w3-display-hover">
                         <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
                     </div>
                 </div>
-                <p>  <br><b><% p1.getPrice();%></b></p>
+                <p>  <br><b>$19.99</b></p>
             </div>
-            <% }%>
         </div>
-        <% }%>
+
+        <div class="w3-col l3 s6">
+            <div class="w3-container">
+                <div class="w3-display-container">
+                    <img src="Images/cupcakes.jpg" style="width:100%">
+                    <span class="w3-tag w3-display-topleft">New</span>
+                    <div class="w3-display-middle w3-display-hover">
+                        <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <p>  <br><b>$19.99</b></p>
+            </div>
+            <div class="w3-container">
+                <div class="w3-display-container">
+                    <img src="Images/cookieshome.jpg" style="width:100%">
+                    <div class="w3-display-middle w3-display-hover">
+                        <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <p>  <br><b>$20.50</b></p>
+            </div>
+        </div>
+
+        <div class="w3-col l3 s6">
+            <div class="w3-container">
+                <div class="w3-display-container">
+                    <img src="Images/donuts.jpg" style="width:100%">
+                    <div class="w3-display-middle w3-display-hover">
+                        <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <p>  <br><b>$20.50</b></p>
+            </div>
+            <div class="w3-container">
+                <div class="w3-display-container">
+                    <img src="Images/maccies.jpg" style="width:100%">
+                    <!--                    <span class="w3-tag w3-display-topleft">Sale</span>-->
+                    <div class="w3-display-middle w3-display-hover">
+                        <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <p><br><b class="w3-text-red">$14.99</b></p>
+            </div>
+        </div>
+
+        <div class="w3-col l3 s6">
+            <div class="w3-container">
+                <div class="w3-display-container">
+                    <img src="Images/lamear.jpg" style="width:100%">
+                    <div class="w3-display-middle w3-display-hover">
+                        <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <p> <br><b>$14.99</b></p>
+            </div>
+            <div class="w3-container">
+                <div class="w3-display-container">
+                    <img src="Images/yesses.jpg" style="width:100%">
+                    <div class="w3-display-middle w3-display-hover">
+                        <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
+                    </div>
+                </div>
+                <p><br><b>$24.99</b></p>
+            </div>
+        </div>
     </div>
 
-    <editor-fold defaultstate="collapsed" desc="temps">
-        <!--                    <div class="w3-col l3 s6">
-                                <div class="w3-container">
-                                    <div class="w3-display-container">
-                                        <img src="Images/cupcakes.jpg" style="width:100%">
-                                        <span class="w3-tag w3-display-topleft">New</span>
-                                        <div class="w3-display-middle w3-display-hover">
-                                            <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <p>  <br><b>$19.99</b></p>
-                                </div>
-                                <div class="w3-container">
-                                    <div class="w3-display-container">
-                                        <img src="Images/cookieshome.jpg" style="width:100%">
-                                        <div class="w3-display-middle w3-display-hover">
-                                            <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <p>  <br><b>$20.50</b></p>
-                                </div>
-                            </div>
-                
-                            <div class="w3-col l3 s6">
-                                <div class="w3-container">
-                                    <div class="w3-display-container">
-                                        <img src="Images/donuts.jpg" style="width:100%">
-                                        <div class="w3-display-middle w3-display-hover">
-                                            <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <p>  <br><b>$20.50</b></p>
-                                </div>
-                                <div class="w3-container">
-                                    <div class="w3-display-container">
-                                        <img src="Images/maccies.jpg" style="width:100%">
-                                                            <span class="w3-tag w3-display-topleft">Sale</span>
-                                        <div class="w3-display-middle w3-display-hover">
-                                            <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <p><br><b class="w3-text-red">$14.99</b></p>
-                                </div>
-                            </div>
-                
-                            <div class="w3-col l3 s6">
-                                <div class="w3-container">
-                                    <div class="w3-display-container">
-                                        <img src="Images/lamear.jpg" style="width:100%">
-                                        <div class="w3-display-middle w3-display-hover">
-                                            <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <p> <br><b>$14.99</b></p>
-                                </div>
-                                <div class="w3-container">
-                                    <div class="w3-display-container">
-                                        <img src="Images/yesses.jpg" style="width:100%">
-                                        <div class="w3-display-middle w3-display-hover">
-                                            <button class="w3-button w3-black">Add to Cart<i class="fa fa-cart-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <p><br><b>$24.99</b></p>
-                                </div>
-                            </div>-->
-
-    </editor-fold>
 </editor-fold>
 <!-- Contact Section -->
 <editor-fold defaultstate="collapsed" desc="Cart">
