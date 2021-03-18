@@ -1,7 +1,8 @@
 package com.bakerysystem.client;
 
-import Model.Customer;
 import com.bakerysystem.extraz.Helper;
+import com.bakerysystem.model.Customer;
+import com.bakerysystem.model.Product;
 import com.bakerysystem.properties.BSConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -34,14 +35,21 @@ public class DefaultClient <T> {
             responseRes = target.request().post(Entity.json(Helper.convert2Json(obj))).readEntity(String.class);
         }
         
-        return responseRes;
+        return "RESPONSE: "+ responseRes;
     }
     
      //   Create : CHECKED | Retrieve : _all__|_1_ : CHECKED | Update : CHECKED | Delete : CHECKED        
     public static void main(String [] agr){
-       DefaultClient dc = new DefaultClient<>("users");
-       String response = dc.get(17, "user/{id}").toString();//.getAll("accounts").toString();//.get(17, "user/{id}").toString();//.create(new Customer("Themba", "Ndwandwe", "themba.ndwandwe@yahoo.com", "NA", "0823527###", "#############", 101, "password"), "register"); //.remove(14, "remove/{id}");//.update(new Customer(8, "first", "last", "email@something.com", "tel-home", "mobile-no", "identityNo", 0, "password"), "editdetails");
-       System.out.println(response);
+       DefaultClient dc = new DefaultClient<>("products");
+
+       for(int i = 0 ; i < 10 ; i++){
+           Product prod = new Product(0, "Chocolate moose " + i, "picture", 0, 45.33 + i, 0, null, "Description", "Warnings");
+           dc.create(prod, "add-product");
+       }
+       
+       String res = dc.create(dc, "");
+       // getAll
+       System.out.println(dc.getAll("catalogue"));
     }
     
     public   ArrayList<T> getAll(String methodPath) {
@@ -66,6 +74,7 @@ public class DefaultClient <T> {
     }
     
     public   T get(int objID, String methodPath) {
+        T obj = null;
         try {
             Client client = ClientBuilder.newClient();
             WebTarget webTarget = client.target(URL + methodPath).resolveTemplate("id", objID);
@@ -77,14 +86,13 @@ public class DefaultClient <T> {
             System.out.println(s);
             
             ObjectMapper ob = new ObjectMapper();
-            T obj =  (T) ob.readValue(s, Object.class);
+            obj =  (T) ob.readValue(s, Object.class);
 
-            return obj;
+            
         } catch (Exception ex) {
             System.err.println("ERROR: Couldnt retrieve product");
         }
-
-        return null;
+        return obj;
     }
     
     public String update(T cus, String methodPath) {

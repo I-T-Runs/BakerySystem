@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Product;
+import com.bakerysystem.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;

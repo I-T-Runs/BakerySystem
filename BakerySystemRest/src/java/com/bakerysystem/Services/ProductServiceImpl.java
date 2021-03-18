@@ -36,8 +36,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ArrayList<Product> getProductsByCategory(int categoryId) {
-        return pdl.getProductByCategory(categoryId);
+        return pdl.getProductsByCategory(categoryId);
     }
-
-  
+    
+   
+  public static void main(String [] args){
+                
+        System.out.println(new ProductServiceImpl().getAllProducts());
+    }
 }

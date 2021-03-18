@@ -1,6 +1,6 @@
 package com.bakerysystem.client;
 
-import Model.Customer;
+import com.bakerysystem.model.Customer;
 import com.bakerysystem.extraz.Helper;
 import com.bakerysystem.properties.BSConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -111,10 +111,10 @@ public class AccountsClient {
 
      public static void main(String[] args) {
          System.out.println(new AccountsClient().getAccount(17));
-//String s = new AccountsClient().getAllAccounts().toString();
+String s = new AccountsClient().getAllAccounts().toString();
 //        String s = new AccountsClient().updateDetails(new Customer(16, "firstname", "lastname", "email", "tel-home", "mobile-no", "identityNo", 0, "password")); // 
 //        String s = new AccountsClient().remove(13); // 
-//        System.out.println(s);
+        System.out.println(s);
 //        new AccountsClient().register(new Customer(0, "firstname", "lastname", "email", "tel-home", "mobile-no", "identityNo", 0, "password"));
 //        Customer u = new AccountsClient().login("email0@gmail", "password");
 //        if(u == null){

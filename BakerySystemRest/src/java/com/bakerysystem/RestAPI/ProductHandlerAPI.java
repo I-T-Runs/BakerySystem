@@ -29,59 +29,34 @@ public class ProductHandlerAPI {
     public ArrayList<Product> getProducts(){//String displayAllProducts() {
         
                             //      HARD CODE FOR NO DB API
-//        ArrayList<Product> catalogue = new ArrayList<>(); // new ProductDaoImpl().getProducts();
-//        ArrayList<Ingredient> recipe = new ArrayList<>();
-//        
-//        for (int i = 0; i < 3; i++) {
-//            recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
-//        }
-//        
-//        for (int i = 0; i < 20; i++) {            
-//            Product prod = new Product(i, "Product " + (i + 1),".\\images\\imagename"+i+".file",111,10.99,0,recipe,"I am a product description","And This here is a warnging");
-//            catalogue.add(prod);
-//            
-//        }
-        
         return new ProductServiceImpl().getAllProducts();//catalogue;
     }
     
     @GET
-    @Path("/product/{productid}")
+    @Path("/product/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAProduct(@PathParam("productid") int productid ){//String displayAllProducts() {
-        ArrayList<Ingredient> recipe = new ArrayList<Ingredient>();
-                        
-                                  // THIS JUST ADDS A DEFAULT RECIPE
-        for (int i = 0; i < 3; i++) {
-            recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
-        }        
-        Product prod =  new Product(productid, "name", FAILED, productid, 54.22, 22, recipe, SUCCESSFUL, SUCCESSFUL);
-//                                                                    rs.getString("Photo"),
-//        Product prod = new ProductDaoImpl().getProduct(productid);//new Product(productid, "Product " + productid,".\\images\\imagename"+productid+".file",111,10.99,0,recipe,"I am a product description","And This here is a warning");//new ProductDaoImpl().getProduct(productid);
+    public Product getAProduct(@PathParam("id") int productid ){//String displayAllProducts() {
         
-        if(prod.getProductID() == productid){
-            return Response.status(Response.Status.OK).entity(prod).build();
-        }
-        
-        prod.setRecipeArr(recipe);
+        return new ProductServiceImpl().getProduct(productid);
 
-        return Response.status(Response.Status.OK).entity("Couldn't get product").build();
     }
-    
    
-    
     @DELETE
-    @Path("/remove/{productid}")
-    public String removeProduct(@PathParam("productid") int productid){
-        new ProductDaoImpl().removeProduct(productid);
+    @Path("/remove/{id}")
+    public String removeProduct(@PathParam("id") int productid){
+        if(new ProductDaoImpl().removeProduct(productid)==true){
+            return SUCCESSFUL;
+        }
         return FAILED;
     }
     
     @PUT
     @Path("/update")
     public String editProduct(Product prod){
-        new ProductDaoImpl().updateProduct(prod);        
-// GIVE DB a PRODUCT INSTANCE
+
+        if(new ProductDaoImpl().updateProduct(prod)==true){
+            return SUCCESSFUL;
+        }
         return FAILED;
     }
     
@@ -91,9 +66,10 @@ public class ProductHandlerAPI {
     public String addProduct(Product prod){ //Query @FormParam("")){
         
         // GIVE DB a PRODUCT INSTANCE
-        new ProductDaoImpl().addProduct(prod);
-        
-        return "Hello";
+         if(new ProductDaoImpl().addProduct(prod)==true){
+            return SUCCESSFUL;
+        }
+        return FAILED;
     }
 
 }

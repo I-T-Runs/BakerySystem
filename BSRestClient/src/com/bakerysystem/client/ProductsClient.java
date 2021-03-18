@@ -1,7 +1,7 @@
 package com.bakerysystem.client;
 
-import Model.Category;
-import Model.Product;
+import com.bakerysystem.model.Category;
+import com.bakerysystem.model.Product;
 import com.bakerysystem.extraz.Helper;
 import com.bakerysystem.properties.BSConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +57,10 @@ public class ProductsClient {
 
     public ArrayList<Product> getAllProducts() {
         return dc.getAll("all-products");
+    }
+    
+    public static void main(String [] args){
+        System.out.println(URL);
     }
 
     // CSS - URL

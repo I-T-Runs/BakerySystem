@@ -5,7 +5,7 @@
  */
 package Controller.processes;
 
-import Model.*;
+import com.bakerysystem.model.Customer;
 import com.bakerysystem.client.AccountsClient;
 import java.io.IOException;
 import java.util.ArrayList;

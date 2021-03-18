@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.Ingredient;
@@ -40,12 +44,23 @@ public class ProductDaoImpl implements ProductDao {
 		}
     }
 
+    
+    
+//    public static void main(String [] args){
+//                
+//        for(int i = 0 ; i < 10 ; i++){
+//           Product prod = new Product(0, "Chocolate moose " + i, "picture", 0, 45.33 + i, 0, null, "Description", "Warnings");
+//           boolean j = new ProductDaoImpl().addProduct(prod);
+//        }
+//    }
+    
     @Override
     public boolean addProduct(Product prod) {
       
-        int check =0;
+        int check;
         
         try {
+            myCon.setAutoCommit(false);
             ps = myCon.prepareStatement("INSERT INTO PRODUCTSTABLE(PRODUCTID, CATEGORYID, PRODUCTNAME, PRICE, DISCOUNT, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS, ACTIVITY) VALUES(null,?,?,?,?,?,?,?, 'ACTIVE')");
            
             ps.setInt(1, prod.getCategoryID());
@@ -66,8 +81,14 @@ public class ProductDaoImpl implements ProductDao {
                 ps.setInt(1, prod.getProductID());
                 ps.setInt(2, prod.getRecipeArr().get(i).getIngredientId());
                 ps.setInt(3, prod.getRecipeArr().get(i).getQuantity());
-                ps.executeUpdate();
+                check = check + ps.executeUpdate();
             }
+            
+            if(check != (prod.getRecipeArr().size() + 1)){
+                    myCon.rollback();
+                    return false;
+                }
+                myCon.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }   
@@ -79,7 +100,7 @@ public class ProductDaoImpl implements ProductDao {
         ArrayList<Ingredient>ingrs = new ArrayList();
         Product prd = null;
         try {        
-            ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+            ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
             ps.setInt(1, productId);
             rs = ps.executeQuery();
             
@@ -124,7 +145,7 @@ public class ProductDaoImpl implements ProductDao {
             rs = ps.executeQuery();
             
             while(rs.next()){   
-                 ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+                 ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.INGREDIENTNAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
                  ps.setInt(1, rs.getInt("PRODUCTID"));
                  rs2 = ps.executeQuery();
                  
@@ -203,9 +224,9 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public ArrayList<Product> getProductByCategory(int productId) {
-        ArrayList<Product> listOfProducts = new ArrayList<>();
-        ArrayList<Ingredient> recipe = new ArrayList<>();
+    public ArrayList<Product> getProductsByCategory(int categoryId) {
+        ArrayList<Product> listOfProducts = new ArrayList();
+        ArrayList<Ingredient> recipe = new ArrayList();
         try {
             ps = myCon.prepareStatement("");
             
@@ -216,16 +237,16 @@ public class ProductDaoImpl implements ProductDao {
                  
                  while(rs2.next()){
                      
-                    recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
+                     recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
                  }
-                 listOfProducts.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), recipe, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS")));
-                 recipe.clear();
+              listOfProducts.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), recipe, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS")));
+              recipe.clear();
             }
             
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return null;
+        return listOfProducts;
     }
 }
+ 

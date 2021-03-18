@@ -1,6 +1,6 @@
 package Controller.processes;
 
-import Model.Product;
+import com.bakerysystem.model.Product;
 import com.bakerysystem.client.ProductsClient;
 import java.io.IOException;
 import java.util.ArrayList;

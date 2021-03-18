@@ -36,7 +36,7 @@ public class IngredientServiceImpl implements IngredientService {
     public boolean addIngredient(Ingredient ingredient) {
         return ingrD.addIngredient(ingredient);
     }
-
+    
     @Override
     public boolean deleteIngredient(int ingredientId) {
         return ingrD.removeInggredient(ingredientId);
