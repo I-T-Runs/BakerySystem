@@ -34,12 +34,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer registerCustomer(Customer cust) {
+        System.out.println(cust.toString());
         if (ud.getUser(cust.getEmail(), cust.getPassword()) != null) {
             return null;
         }
         custD.addCustomer(cust);
         ud.addUser(new User(cust.getEmail(), cust.getPassword(), "CUSTOMER"));
-        return cust;
+         int last = custD.getAllCustomers().size();
+         return custD.getAllCustomers().get(last - 1);
     }
     @Override
     public Customer login(String email, String password) {
@@ -52,12 +54,23 @@ public class CustomerServiceImpl implements CustomerService {
         cust.setCart(cartD.getCart(cust.getCustomerId()));
         return cust;
     }
+    
+     
+
 
     @Override
     public boolean updateCustomer(Customer cust) {
         return custD.updateCustomer(cust);
     }
 
+    public static void main(String[] args) {
+         boolean c = new CustomerServiceImpl().confirmEmail("Dave@gmail.com");
+         
+         String res = c == true ? "Success" : "FAILED";
+         
+         System.out.println(res);
+    }
+    
     @Override
     public boolean confirmEmail(String email) {
         if (custD.getCustomerEmail(email) == null) {
@@ -82,8 +95,5 @@ public class CustomerServiceImpl implements CustomerService {
         return custD.removeCustomer(customerId);
     }
      
-    public static void main(String[] args) {
-        System.out.println(new CustomerServiceImpl().getCustomer(17));
-    }
-
+   
 }

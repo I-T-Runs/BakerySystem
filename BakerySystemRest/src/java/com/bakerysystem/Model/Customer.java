@@ -18,18 +18,10 @@ public class Customer {
     public Customer() {}
 
     public Customer(int customerId, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressID, String password ){
-        
-        this.customerId=customerId;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.email=email;
-        this.telephonehome=telephonehome;
-        this.telephonemobile=telephonemobile;
-        this.password=password;
-        this.ID = ID;
-        this.addressId=addressID;
+       this(firstName, lastName, email, telephonehome, telephonemobile, ID, addressID, password);
+       this.customerId = customerId;
     }
-
+    
     public Customer(String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,16 +31,8 @@ public class Customer {
         this.ID = ID;
         this.addressId = addressId;
         this.password = password;
-//        this.cart = cart;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", telephonehome=" + telephonehome + ", telephonemobile=" + telephonemobile + ", ID=" + ID + ", addressId=" + addressId + ", password=" + password + ", cart=" + cart + '}';
     }
     
-    
-
     public int getCustomerId() {
         return customerId;
     }

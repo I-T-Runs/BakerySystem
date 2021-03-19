@@ -14,8 +14,6 @@ import com.bakerysystem.Model.Cart;
 public interface CartDao {
     
     boolean addCart(Cart cart);
-    boolean removeFromCart(int cartid);
     Cart getCart(int customerID);
-    boolean updateCart(Cart cart);
     
 }

@@ -6,7 +6,6 @@
 package com.bakerysystem.RestAPI;
 
 import com.bakerysystem.Model.*;
-import com.bakerysystem.Services.IngredientServiceImpl;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -32,41 +31,33 @@ public class IngredientsHandlerAPI {
     @POST
     @Path("/add-ingredient-stock")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addIngredient(Ingredient ingr){
+    public String addIngredient(){
 
-        if(new IngredientServiceImpl().addIngredient(ingr) == true){
-            return SUCCESSFUL;
-        }
+        // IF STATEMENT THAT WILL REPRESENT SUCCESSFUL CONDITION
        return FAILED;
     }
     
     @DELETE
-    @Path("/delete-ingredient-stock-item/{id}")
-    public String removeIngredient(@PathParam("id") int ingredientID){
-
-        if(new IngredientServiceImpl().deleteIngredient(ingredientID) == true){
-            return SUCCESSFUL;
-        }
+    @Path("/delete-ingredient-stock-item")
+    public String removeIngredient(@PathParam("ingredientid") int ingredientID){
+ 
+                // IF STATEMENT THAT WILL REPRESENT SUCCESSFUL CONDITION
         return FAILED;
     }
     
     @PUT
-    @Path("/restock/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String restock(Ingredient ingr){//@PathParam("ingredientid") int ingredientID, @FormParam("optRestockAmount") int quantity){ // WHICH IS Essentially an Edit of the ingredient ++Quantity
-                    //                    RESTOCKS  ->  quantity of whatever will be added to existing one
-//                 ingr =  new IngredientServiceImpl().restockIngredient(ingr.getIngredientId(), ingr.getQuantity());
+    @Path("/restock/{ingredientid}")
+    public String restock(@PathParam("ingredientid") int ingredientID, @FormParam("optRestockAmount") int quantity){ // WHICH IS Essentially an Edit of the ingredient ++Quantity
+                // ingredient =  new CategoryDaoImpl().restockIngredient(ingredientID, quantity);
         return FAILED;
     }
     
     @PUT
     @Path("/edit")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String editIngreidient(Ingredient ingredient){ // changin the name of the ingredient  [MEASUREMENT FIELD - kg, l, g .etc]
+    public String editIngreidient(@PathParam("ingredientid") int ingredientID){ // changin the name of the ingredient  [MEASUREMENT FIELD - kg, l, g .etc]
         
-          if(new IngredientServiceImpl().updateIngredient(ingredient) == true){
-              return SUCCESSFUL;
-          }
+        //  ingredient =  new CategoryDaoImpl().updateIngredient();
+        
         return FAILED;
     }
     
@@ -74,18 +65,18 @@ public class IngredientsHandlerAPI {
     @Path("/ingredients")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Ingredient> retrieveAllIngredients(){
-        List<Ingredient> ingredients =  new IngredientServiceImpl().getAllIngredients();
+        //List<Ingredient> ingredients =  new CategoryDaoImpl().getIngredients();
         
         // return ingredients;
-        return ingredients;
+        return null;
     }
     
     @GET
-    @Path("/ingredient-item/{id}")
+    @Path("/ingredient-item")
     @Produces(MediaType.APPLICATION_JSON)
-    public Ingredient getIngredient(@PathParam("id") int ingredientID){
+    public Ingredient getIngredient(@PathParam("ingredientid") int ingredientID){
         
-         return new IngredientServiceImpl().getIngredient(ingredientID);
-//        return null;
+        // return new dao.getIngredient(ingredientID);
+        return null;
     }
 }

@@ -28,8 +28,16 @@ public class ProductHandlerAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Product> getProducts(){//String displayAllProducts() {
         
-                            //      HARD CODE FOR NO DB API
-        return new ProductServiceImpl().getAllProducts();//catalogue;
+        ArrayList<Product> catalogue = new ProductDaoImpl().getProducts();
+        ArrayList<Ingredient> recipe = new ArrayList<>();
+        
+        for (int i = 0; i < 3; i++) {
+            recipe.add(new Ingredient(((i + 1)), ("ingredient" + (i + 1)), (((int) (Math.random() * 6) + 1))));
+        }
+        
+        
+        
+        return catalogue;
     }
     
     @GET
@@ -37,24 +45,40 @@ public class ProductHandlerAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Product getAProduct(@PathParam("id") int productid ){//String displayAllProducts() {
         
-        return new ProductServiceImpl().getProduct(productid);
-
+        
+        return new ProductServiceImpl().getProduct(productid) ;
+//                                                                    rs.getString("Photo"),
+//        Product prod = new ProductDaoImpl().getProduct(productid);//new Product(productid, "Product " + productid,".\\images\\imagename"+productid+".file",111,10.99,0,recipe,"I am a product description","And This here is a warning");//new ProductDaoImpl().getProduct(productid);
+        
+//        if(prod.getProductID() == productid){
+//            return Response.status(Response.Status.OK).entity(prod).build();
+//        }
+//        
+//        prod.setRecipeArr(recipe);
+//
+//        return Response.status(Response.Status.OK).entity("Couldn't get product").build();
     }
+    
    
+    
     @DELETE
     @Path("/remove/{id}")
     public String removeProduct(@PathParam("id") int productid){
-        if(new ProductDaoImpl().removeProduct(productid)==true){
+        
+        if(new ProductDaoImpl().removeProduct(productid) == true){
             return SUCCESSFUL;
         }
+        
         return FAILED;
     }
     
     @PUT
-    @Path("/update")
+    @Path("/update/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String editProduct(Product prod){
-
-        if(new ProductDaoImpl().updateProduct(prod)==true){
+                
+// GIVE DB a PRODUCT INSTANCE
+        if(new ProductDaoImpl().updateProduct(prod)){
             return SUCCESSFUL;
         }
         return FAILED;
@@ -62,11 +86,12 @@ public class ProductHandlerAPI {
     
      @GET
     @Path("/add-product")
-     @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String addProduct(Product prod){ //Query @FormParam("")){
         
         // GIVE DB a PRODUCT INSTANCE
-         if(new ProductDaoImpl().addProduct(prod)==true){
+        
+        if(new ProductDaoImpl().addProduct(prod) == true){
             return SUCCESSFUL;
         }
         return FAILED;

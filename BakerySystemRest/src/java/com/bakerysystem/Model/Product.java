@@ -4,41 +4,50 @@ import com.bakerysystem.Model.Ingredient;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product implements Serializable {
+   public class Product implements Serializable {
 	private int productID ;
 	private String productName ; 
         private String photo;
-	private int categoryID; 
-	private ArrayList<Ingredient> recipeArr ;
-	private int  currentlyAvailable ;
-        private double price;
-        private double actualPrice;
-        private int discount;       
+	private ArrayList<Ingredient> recipeArr ;       
         private String productDescription;
         private String productWarnings;
+        private double price;
+        private double actualPrice;
+        private int discount;   
+        private int categoryID; 
         
-
         public Product() {
     
         }
+
+    public Product(int productID, String productName, String photo, String productDescription, String productWarnings, double price, int discount, int categoryID) {
+        this.productID = productID;
+        this.productName = productName;
+        this.photo = photo;
+        this.productDescription = productDescription;
+        this.productWarnings = productWarnings;
+        this.price = price;
+        this.discount = discount;
+        this.categoryID = categoryID;
+    }
+
+    public Product(String productName, String photo, String productDescription, String productWarnings, double price, int discount, int categoryID) {
+        this.productName = productName;
+        this.photo = photo;
+        this.productDescription = productDescription;
+        this.productWarnings = productWarnings;
+        this.price = price;
+        this.discount = discount;
+        this.categoryID = categoryID;
+    }
    
-	public Product(int productID, String productName, String photo, int categoryID, Double price, int discount, ArrayList<Ingredient> recipeArr, String productDescription, String productWarnings) {
-		super();
-		setProductID(productID);
-                setProductName(productName);
-                setPhoto(photo);
-                setCategoryID(categoryID);
-                setPrice(price);
-                setDiscount(discount);
-                setRecipeArr(recipeArr);
-                setProductDescription(productDescription);
-                setProductWarnings(productWarnings);
-	}
+    
+	
 
 	@Override
 	public String toString() {
 		return "Product [productID=" + productID + ", productName=" + productName + ", category=" + categoryID
-				+ ", currentlyAvailable=" + currentlyAvailable + "]";
+				 + "]";
 	}
     public int getProductID() {
         return productID;
@@ -85,13 +94,7 @@ public class Product implements Serializable {
 	public void setRecipeArr(ArrayList<Ingredient> recipeArr) {
 		this.recipeArr = recipeArr;
 	}
-	public int getCurrentlyAvailable() {
-		return currentlyAvailable;
-	}
-	public void setCurrentlyAvailable(int currentlyAvailable) {
-		this.currentlyAvailable = currentlyAvailable;
-	} 
-
+	
         public String getPhoto() {
             return photo;
         }
@@ -123,5 +126,4 @@ public class Product implements Serializable {
     public void setProductWarnings(String productWarnings) {
         this.productWarnings = productWarnings;
     }
-        
 }

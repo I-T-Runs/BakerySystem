@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.Ingredient;
 import com.bakerysystem.Model.Product;
+import com.bakerysystem.Services.ProductServiceImpl;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,49 +16,43 @@ import java.util.logging.Logger;
  *
  * @author keoagile
  */
-
 public class ProductDaoImpl implements ProductDao {
 
     private Connection myCon;
     private PreparedStatement ps;
+    private PreparedStatement ps1;
     private ResultSet rs;
     private ResultSet rs2;
 
     public ProductDaoImpl() {
         try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
-			e.printStackTrace();
-		}
-		
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
-		try {
-			myCon = DriverManager.getConnection(url,"root","root");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
+            e.printStackTrace();
+        }
+
+        String url = "jdbc:mysql://localhost:3306/cakeshop";
+        try {
+            myCon = DriverManager.getConnection(url, "root", "root");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    
-    
-//    public static void main(String [] args){
-//                
-//        for(int i = 0 ; i < 10 ; i++){
-//           Product prod = new Product(0, "Chocolate moose " + i, "picture", 0, 45.33 + i, 0, null, "Description", "Warnings");
-//           boolean j = new ProductDaoImpl().addProduct(prod);
-//        }
-//    }
-    
+    public static void main(String[] args) {
+//        new ProductDaoImpl().addProduct(0, "Product " + 0,".\\images\\imagename"+0+".file",111,10.99,0,null,"I am a product description","And This here is a warning");
+//       System.out.println(new ProductDaoImpl().getProducts().get(0).getProductName());
+    }
+
     @Override
     public boolean addProduct(Product prod) {
-      
-        int check;
-        
+
+        int check = 0;
+
         try {
-            myCon.setAutoCommit(false);
             ps = myCon.prepareStatement("INSERT INTO PRODUCTSTABLE(PRODUCTID, CATEGORYID, PRODUCTNAME, PRICE, DISCOUNT, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS, ACTIVITY) VALUES(null,?,?,?,?,?,?,?, 'ACTIVE')");
-           
+
             ps.setInt(1, prod.getCategoryID());
             ps.setString(2, prod.getProductName());
             ps.setDouble(3, prod.getPrice());
@@ -71,50 +61,45 @@ public class ProductDaoImpl implements ProductDao {
             ps.setString(6, prod.getProductDescription());
             ps.setString(7, prod.getProductWarnings());
             check = ps.executeUpdate();
-            
-            if(check != 1){
+
+            if (check != 1) {
                 return false;
             }
-    
-            for (int i = 0; i < prod.getRecipeArr().size(); i++ ) {
+
+            for (int i = 0; i < prod.getRecipeArr().size(); i++) {
                 ps = myCon.prepareStatement("INSERT INTO PRODUCTINGREDIENTTABLE(PRODUCTID, INGREDIENTID, QUANTITY) VALUES(?,?,?)");
                 ps.setInt(1, prod.getProductID());
                 ps.setInt(2, prod.getRecipeArr().get(i).getIngredientId());
                 ps.setInt(3, prod.getRecipeArr().get(i).getQuantity());
-                check = check + ps.executeUpdate();
+                ps.executeUpdate();
             }
-            
-            if(check != (prod.getRecipeArr().size() + 1)){
-                    myCon.rollback();
-                    return false;
-                }
-                myCon.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
         return true;
     }
 
     @Override
     public Product getProduct(int productId) {
-        ArrayList<Ingredient>ingrs = new ArrayList();
         Product prd = null;
-        try {        
-            ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+        try {
+            ps = myCon.prepareStatement("SELECT PRODUCTID, PRODUCTNAME, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS, PRICE, DISCOUNT, CATEGORYID  FROM PRODUCTSTABLE WHERE PRODUCTID = ? AND ACTIVITY = 'ACTIVE'");
             ps.setInt(1, productId);
             rs = ps.executeQuery();
-            
-            while(rs.next()){
-                
-                ingrs.add(new Ingredient(rs.getInt("INGREDIENTTABLE"), rs.getString("NAME"), rs.getInt("QUANTITY")));
+
+            while (rs.next()) {
+                prd = new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), rs.getInt("CATEGORYID"));
             }
-            
-            ps = myCon.prepareStatement("SELECT PRODUCTID, CATEGORYID, PRODUCTNAME, PRICE, DISCOUNT, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS FROM PRODUCTSTABLE WHERE PRODUCTID = ? AND ACTIVITY = 'ACTIVE'");
-            rs = ps.executeQuery();
-                    
-            while(rs.next()){
-                prd = new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), ingrs, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS"));
-            }
+
+                ps1 = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.INGREDIENTNAME FROM PRODUCTINGREDIENTTABLE INNER JOIN INGREDIENTTABLE ON PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ?");
+                ps.setInt(1, productId);
+                rs = ps1.executeQuery();
+
+                ArrayList<Ingredient> listOfIngredients = new ArrayList();
+                while (rs.next()) {
+                    listOfIngredients.add(new Ingredient(rs.getInt("INGREDIENTID"), rs.getString("INGREDIENTNAME"), rs.getInt("QUANTITY")));
+                }
+                prd.setRecipeArr(listOfIngredients);
             
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,11 +109,11 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public boolean removeProduct(int productId) {
-           int check =0;
+        int check = 0;
         try {
             ps = myCon.prepareStatement("UPDATE PRODUCTSTABLE SET ACTIVITY = 'INACTIVE' WHERE PRODUCTID = ?");
             check = ps.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,60 +122,61 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public ArrayList<Product> getProducts() {
-        ArrayList<Product>listOfProducts = new ArrayList();
-        ArrayList<Ingredient>recipe = new ArrayList();
-        
+        ArrayList<Product> listOfProducts = new ArrayList();
+
         try {
-            ps = myCon.prepareStatement("SELECT PRODUCTID, CATEGORYID, PRODUCTNAME, PRICE, DISCOUNT, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS FROM PRODUCTSTABLE WHERE ACTIVITY = 'ACTIVE'");
+            ps = myCon.prepareStatement("SELECT PRODUCTID, PRODUCTNAME, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS, PRICE, DISCOUNT, CATEGORYID  FROM PRODUCTSTABLE WHERE ACTIVITY = 'ACTIVE'");
             rs = ps.executeQuery();
-            
-            while(rs.next()){   
-                 ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.INGREDIENTNAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
-                 ps.setInt(1, rs.getInt("PRODUCTID"));
-                 rs2 = ps.executeQuery();
-                 
-                 while(rs2.next()){
-                     
-                     recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
-                 }
-              listOfProducts.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), recipe, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS")));
-              recipe.clear();
+
+            while (rs.next()) {
+                listOfProducts.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), rs.getInt("CATEGORYID")));
             }
-           
+
+            for (int i = 0; i < listOfProducts.size(); i++) {
+                ps1 = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.INGREDIENTNAME FROM PRODUCTINGREDIENTTABLE INNER JOIN INGREDIENTTABLE ON PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ?");
+                ps.setInt(1, listOfProducts.get(i).getProductID());
+                rs = ps1.executeQuery();
+
+                ArrayList<Ingredient> listOfIngredients = new ArrayList();
+                while (rs.next()) {
+                    listOfIngredients.add(new Ingredient(rs.getInt("INGREDIENTID"), rs.getString("INGREDIENTNAME"), rs.getInt("QUANTITY")));
+                }
+                listOfProducts.get(i).setRecipeArr(listOfIngredients);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
         return listOfProducts;
     }
 
     @Override
     public ArrayList<Product> searchForProduct(String searchString) {
-        
-        ArrayList<Product>searchResult = new ArrayList();
-        ArrayList<Ingredient>recipe = new ArrayList();
-        
+
+        ArrayList<Product> searchResult = new ArrayList();
+        ArrayList<Ingredient> recipe = new ArrayList();
+
         try {
             ps = myCon.prepareStatement("SELECT PRODUCTID, CATEGORYID, PRODUCTNAME, PRICE, DISCOUNT, PHOTO, PRODUCTDESCRIPTION, PRODUCTWARNINGS FROM PRODUCTSTABLE WHERE PRODUCTNAME LIKE '%?%' AND ACTIVITY = 'ACTIVE'");
             ps.setString(1, searchString);
             rs = ps.executeQuery();
-            
-            while(rs.next()){   
-                 ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
-                 ps.setInt(1, rs.getInt("PRODUCTID"));
-                 rs2 = ps.executeQuery();
-                 
-                 while(rs2.next()){
-                     
-                     recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
-                 }
-              searchResult.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), recipe, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS")));
-              recipe.clear();
+
+            while (rs.next()) {
+                ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+                ps.setInt(1, rs.getInt("PRODUCTID"));
+                rs2 = ps.executeQuery();
+
+                while (rs2.next()) {
+
+                    recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
+                }
+                searchResult.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), rs.getInt("CATEGORYID")));
+                recipe.clear();
             }
-           
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-        
+        }
+
         return searchResult;
     }
 
@@ -206,11 +192,11 @@ public class ProductDaoImpl implements ProductDao {
             ps.setInt(5, prod.getDiscount());
             ps.setInt(6, prod.getCategoryID());
             check = ps.executeUpdate();
-            if(check != 1){
+            if (check != 1) {
                 return false;
             }
-            for(int i =0; i < prod.getRecipeArr().size(); i++){
-            
+            for (int i = 0; i < prod.getRecipeArr().size(); i++) {
+
                 ps = myCon.prepareStatement("UPDATE PRODUCTINGREDIENTTABLE SET INGREDIENTID = ?, QUANTITY = ? WHERE PRODUCTID = ?");
                 ps.setInt(1, prod.getRecipeArr().get(i).getIngredientId());
                 ps.setInt(2, prod.getRecipeArr().get(i).getQuantity());
@@ -219,34 +205,34 @@ public class ProductDaoImpl implements ProductDao {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return true;   
+
+        return true;
     }
 
     @Override
-    public ArrayList<Product> getProductsByCategory(int categoryId) {
-        ArrayList<Product> listOfProducts = new ArrayList();
-        ArrayList<Ingredient> recipe = new ArrayList();
+    public ArrayList<Product> getProductByCategory(int productId) {
+        ArrayList<Product> listOfProducts = new ArrayList<>();
+        ArrayList<Ingredient> recipe = new ArrayList<>();
         try {
             ps = myCon.prepareStatement("");
-            
-            while(rs.next()){   
-                 ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
-                 ps.setInt(1, rs.getInt("PRODUCTID"));
-                 rs2 = ps.executeQuery();
-                 
-                 while(rs2.next()){
-                     
-                     recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
-                 }
-              listOfProducts.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getInt("CATEGORYID"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), recipe, rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS")));
-              recipe.clear();
+
+            while (rs.next()) {
+                ps = myCon.prepareStatement("SELECT PRODUCTINGREDIENTTABLE.INGREDIENTID, PRODUCTINGREDIENTTABLE.QUANTITY, INGREDIENTTABLE.NAME FROM INGREDIENTTABLE INNNER JOIN PRODUCTINGREDIENTTABLE WHERE PRODUCTINGREDIENTTABLE.PRODUCTID = ? AND PRODUCTINGREDIENTTABLE.INGREDIENTID = INGREDIENTTABLE.INGREDIENTID");
+                ps.setInt(1, rs.getInt("PRODUCTID"));
+                rs2 = ps.executeQuery();
+
+                while (rs2.next()) {
+
+                    recipe.add(new Ingredient(rs2.getInt("INGREDIENTTABLE"), rs2.getString("NAME"), rs2.getInt("QUANTITY")));
+                }
+                listOfProducts.add(new Product(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getString("PHOTO"), rs.getString("PRODUCTDESCRIPTION"), rs.getString("PRODUCTWARNINGS"), rs.getDouble("PRICE"), rs.getInt("DISCOUNT"), rs.getInt("CATEGORYID")));
+                recipe.clear();
             }
-            
+
         } catch (SQLException ex) {
-            Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
-        return listOfProducts;
+
+        return null;
     }
 }
- 

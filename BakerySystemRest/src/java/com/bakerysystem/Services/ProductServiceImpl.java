@@ -23,6 +23,16 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceImpl() {
         pdl = new ProductDaoImpl();
     }
+    public static void main(String [] args){
+//        System.out.println();
+        ArrayList<Product> arr = new ProductServiceImpl().getAllProducts();
+        if(arr.isEmpty()){
+            System.out.println("yebo iyabheda");
+        }
+        for (Product object : arr) {
+            System.out.println(object.getProductName());
+        }
+    }
     
     @Override
     public ArrayList<Product> getAllProducts() {
@@ -36,12 +46,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ArrayList<Product> getProductsByCategory(int categoryId) {
-        return pdl.getProductsByCategory(categoryId);
+        return pdl.getProductByCategory(categoryId);
     }
-    
-   
-  public static void main(String [] args){
-                
-        System.out.println(new ProductServiceImpl().getAllProducts());
-    }
+
+  
 }

@@ -8,8 +8,6 @@ package com.bakerysystem.RestAPI;
 import com.bakerysystem.Model.Category;
 import com.bakerysystem.Model.Product;
 import com.bakerysystem.Model.User;
-import com.bakerysystem.Services.CategoryServiceImpl;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -37,43 +35,51 @@ public class CategoryHandlerAPI {
     @POST
     @Path("/create-category")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createCategory(Category cat){
+    public String createCategory(){
        
-        if(new CategoryServiceImpl().addCategory(cat) == true){
-            return SUCCESSFUL;
-        }
+       // REMEMBER, SHOULD ONLY BE PERMITTED IF THEYRE LOGGED IN AS ADMIN
+       // CategoryDao dao = new CategoryDaoImpl();
+       
+        // make an object out of a given string
+        // create and call dao for storage
+        // should also take in list of the items to be linked with the category
+        
+       // Category c = 
+       
+        // IF STATEMENT THAT WILL REPRESENT SUCCESSFUL CONDITION
        return FAILED;
     }
     
     @DELETE
-    @Path("/delete-category/{id}")
-    public String removeCategory(@PathParam("id") int catid){
-        if(new CategoryServiceImpl().deleteCategory(catid) == true){
-            return SUCCESSFUL;
-        }
-       return FAILED;
+    @Path("/delete-category")
+    public String removeCategory(){
+        
+                
+                // IF STATEMENT THAT WILL REPRESENT SUCCESSFUL CONDITION
+        return FAILED;
     }
     
     @PUT
     @Path("/edit")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String editCategoryDetails(Category cat){
-        if(new CategoryServiceImpl().updateCategory(cat) == true){
-            return SUCCESSFUL;
-        }
-       return FAILED;
+    public boolean editCategoryDetails(){
+        
+        return false;
     }
     
     @GET
     @Path("/categories")
-    public ArrayList<Category> retrieveAllCategories(){
-        return new CategoryServiceImpl().getAllCategories();
+    public List<Category> retrieveAllCategories(){
+        
+        return null;
     }
     
     @GET
-    @Path("/category/{id}")
+    @Path("/populate-categorised/{category}")
     @Produces("applciation/json")
-    public Category getCategory(@PathParam("id") int selectedCategory){
-        return new CategoryServiceImpl().getCategory(selectedCategory);
+    public List<Product> retrieveAllCategories(@PathParam("category") String selectedCategory){
+        //List<Product> products =  new CategoryDaoImpl().getProductsFromCategory(selectedCategory)
+        
+        // return products;
+        return null;
     }
 }

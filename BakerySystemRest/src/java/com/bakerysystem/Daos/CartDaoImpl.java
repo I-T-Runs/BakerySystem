@@ -88,14 +88,4 @@ public class CartDaoImpl implements CartDao {
         }        
         return new Cart(customerID,cartId);
     }
-
-    @Override
-    public boolean removeFromCart(int cartid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean updateCart(Cart cart) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
