@@ -114,84 +114,69 @@
                         <a href="login.jsp" class="w3-bar-item w3-button" onclick="">Log Out</a>
                     </div>
                 </div>
-                <div class="w3-dropdown-click">
-                    <a href="#cart" onclick="openRightMenu()" class="w3-bar-item w3-button"><i class="fa fa-cart-arrow-down"></i> CART</a>
-                    <div class="w3-sidebar w3-bar-block w3-card w3-animate-right" style="display:none;right:0;" id="rightMenu">
-                        <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
-                        <% Cart cart = new Cart(); %>
-                        <% ArrayList<ProductLineItem> cartArr = new ArrayList<>();%>
-                        <% session = request.getSession(); %>
-                        <% session.setAttribute("cartArr", cartArr); %>
-
-                        <% cart.setProducts(cartArr); %>
-                        <% for (ProductLineItem pli : cartArr) {%>
-                        <p><a href="#"><%= pli.getProductName()%></a> <span class="price"><%= pli.getQuantity()%></span></p>
-                            <%}%>
-                        <a href="confirmorder.jsp" class="w3-bar-item w3-button" style="background-color:beige">Proceed to Checkout</a>
-                    </div>
-                </div>
+                 <a href="cart.jsp" onclick="" class="w3-bar-item w3-button"><i class="fa fa-cart-arrow-down"></i> CART</a>
             </div>
         </div>
-        <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
-            <i class="fa fa-bars"></i>
-        </a>
+    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+<script>
+    function openCart() {
+        var x = document.getElementById("carrt");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    function openAccount() {
+        var x = document.getElementById("acco");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    function openRightMenu() {
+        document.getElementById("rightMenu").style.display = "block";
+    }
+
+    function closeRightMenu() {
+        document.getElementById("rightMenu").style.display = "none";
+    }
+</script>
+
+<!-- Sidebar on small screens when clicking the menu icon -->
+<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+    <a href="about.jsp" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+    <a href="shop4.jsp" onclick="w3_close()" class="w3-bar-item w3-button">SHOP</a>
+    <a href="contact.jsp" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+    <a href="account.jsp" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i>ACCOUNT</a>
+    <a href="" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i>CART</a>
+</nav>
+
+<!-- Header with full-height image -->
+<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+    <div class="w3-display-left w3-text-white" style="padding:48px; background: rgb(190, 199, 230, 0.4)">
+        <span class="w3-jumbo w3-hide-small" style="color:black">The Dough Knot Bakery</span><br>
+        <span class="w3-xxlarge w3-hide-large w3-hide-medium"></span><br>
+        <span class="w3-large" style="color:black">Next day delivery of freshly baked goods including Pretzals, Cinnabuns and Macaroons!</br>We are ready to take your order!</span>
+        <p><a href="login.jsp" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Shop Now</a></p>
+    </div> 
+    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+        <i class="fa fa-facebook-official w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+        <i class="fa fa-snapchat w3-hover-opacity"></i>
+        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+        <i class="fa fa-twitter w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
     </div>
-    <script>
-        function openCart() {
-            var x = document.getElementById("carrt");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-            }
-        }
-
-        function openAccount() {
-            var x = document.getElementById("acco");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-            }
-        }
-
-        function openRightMenu() {
-            document.getElementById("rightMenu").style.display = "block";
-        }
-
-        function closeRightMenu() {
-            document.getElementById("rightMenu").style.display = "none";
-        }
-    </script>
-
-    <!-- Sidebar on small screens when clicking the menu icon -->
-    <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
-        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-        <a href="about.jsp" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
-        <a href="shop4.jsp" onclick="w3_close()" class="w3-bar-item w3-button">SHOP</a>
-        <a href="contact.jsp" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
-        <a href="account.jsp" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i>ACCOUNT</a>
-        <a href="" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i>CART</a>
-    </nav>
-
-    <!-- Header with full-height image -->
-    <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-        <div class="w3-display-left w3-text-white" style="padding:48px; background: rgb(190, 199, 230, 0.4)">
-            <span class="w3-jumbo w3-hide-small" style="color:black">The Dough Knot Bakery</span><br>
-            <span class="w3-xxlarge w3-hide-large w3-hide-medium"></span><br>
-            <span class="w3-large" style="color:black">Next day delivery of freshly baked goods including Pretzals, Cinnabuns and Macaroons!</br>We are ready to take your order!</span>
-            <p><a href="login.jsp" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Shop Now</a></p>
-        </div> 
-        <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-            <i class="fa fa-facebook-official w3-hover-opacity"></i>
-            <i class="fa fa-instagram w3-hover-opacity"></i>
-            <i class="fa fa-snapchat w3-hover-opacity"></i>
-            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-            <i class="fa fa-twitter w3-hover-opacity"></i>
-            <i class="fa fa-linkedin w3-hover-opacity"></i>
-        </div>
-    </header>
+</header>
 </editor-fold>
 <!-- Modal for full size images on click-->
 <editor-fold defaultstate="collapsed" desc="Cart">
@@ -223,7 +208,7 @@
                             <p><%=p1.getProductDescription()%></p> 
                             <p><%=p1.getProductWarnings()%></p>
                             <p><%=p1.getActualPrice()%></p>
-                            <button type="button" onclick="addtocart()">Add to Cart</button>
+                            <button><a href="login.jsp" type="button" >Add to Cart</a></button>
                         </div>
                     </div>
                 </div></br>

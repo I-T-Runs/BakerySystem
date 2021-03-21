@@ -20,6 +20,7 @@ public class Customer {
     public Customer(int customerId, String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressID, String password ){
        this(firstName, lastName, email, telephonehome, telephonemobile, ID, addressID, password);
        this.customerId = customerId;
+       this.cart = new Cart();
     }
     
     public Customer(String firstName, String lastName, String email, String telephonehome, String telephonemobile, String ID, int addressId, String password) {

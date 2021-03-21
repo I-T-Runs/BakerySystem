@@ -22,18 +22,16 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-        HttpSession session = request.getSession();
         String em = request.getParameter("em");
         String pw = request.getParameter("pw");
 
         Customer logcust = (Customer) new AccountsClient().login(em, pw);
 
-        if (logcust != null){
+        if (logcust != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("logcust", logcust);
             request.getRequestDispatcher("shop4.jsp").forward(request, response);
         }
-        
-        session.setAttribute("logcust", logcust);
-        System.out.println("hi");
     }
 
     @Override

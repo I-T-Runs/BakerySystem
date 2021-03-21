@@ -4,6 +4,7 @@
     Author     : David
 --%>
 
+<%@page import="com.bakerysystem.Model.Customer"%>
 <%@page import="com.bakerysystem.Model.ProductLineItem"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.bakerysystem.Model.Cart"%>
@@ -16,18 +17,14 @@
     </head>
     <body>
         <div class="w3-container" id="cart">
-            <span onclick="window.open('welcome.jsp').style.display = 'none'" class="close" title="Close Modal">&times;</span>
+            <span onclick="window.open('shop4.jsp').style.display = 'none'" class="close" title="Close Modal">&times;</span>
             <form action="cart" method="POST">
-                <% Cart cart = new Cart(); %>
-                <% ArrayList<ProductLineItem> cartArr = new ArrayList<>(); %>
-                <% cartArr.add(new ProductLineItem(1, "cookie", 1)); %>
-                <% cartArr.add(new ProductLineItem(2, "Brownie", 1)); %>
-                <% cartArr.add(new ProductLineItem(3, "cake", 1)); %>
-                <% cart.setProducts(cartArr); %>
-                <% for (ProductLineItem pli : cartArr) {%>
+                <% Customer customer = (Customer) session.getAttribute("logcust"); %>
+                <% ArrayList<ProductLineItem> cartArr = customer.getCart().getProducts(); %>
+                <% for(ProductLineItem pli : cartArr) {%>
                 <p><a href="shop4.jsp"><%= pli.getProductName()%></a> <span class="price"><%= pli.getQuantity()%></span></p>
                     <%}%>
-                <button><a href="confirmorder.jsp" class="w3-button" style="background-color:beige">Proceed to Checkout</a></button>
+                <button><a href="confirmorder.jsp" class="w3-button" style="background-color:beige;">Proceed to Checkout</a></button>
             </form>
         </div>
         <style>

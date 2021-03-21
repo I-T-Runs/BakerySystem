@@ -1,5 +1,6 @@
 package Controller;
 
+import com.bakerysystem.Model.Cart;
 import com.bakerysystem.Model.Customer;
 import com.bakerysystem.Model.Product;
 import com.bakerysystem.Model.ProductLineItem;
@@ -27,12 +28,14 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
         HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("logcust");
+
         Product retprod = new ProductsClient().recieveProduct(Integer.parseInt(request.getParameter("prodID")));
-        
-        ArrayList<ProductLineItem> cartArr = new ArrayList<>();
         ProductLineItem pli = new ProductLineItem(retprod.getProductID(), retprod.getProductName(), 1);
-        cartArr.add(pli);
-        session.setAttribute("cartarr", cartArr);
+
+        customer.getCart().getProducts().add(pli);;
+
+        session.setAttribute("logcust", customer);
     }
 
     @Override
