@@ -6,6 +6,7 @@
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.Category;
+import com.bakerysystem.properties.BSConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -34,11 +35,19 @@ public class CategoryDaoImpl implements CategoryDao {
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
-		try {
-			myCon3 = DriverManager.getConnection(url,"root","root");
+//		String url = "jdbc:mysql://localhost:3306/cakeshop";
+                String URL = "jdbc:mysql://"+new BSConfig().getDbhost()+":3306/cakeshop";
+		try { 
+                    //                                           created user [ initialise with BSConfig ]
+			myCon3 = DriverManager.getConnection(URL,"mthiz","root");
 		} catch (SQLException e) {
-			e.printStackTrace();
+                    System.out.println("\n"+e.getMessage()+"\n");
+			 try {
+                URL = "jdbc:mysql://localhost:3306/cakeshop";
+                myCon3 = DriverManager.getConnection(URL, "root", "root");
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
 		}
     
     }

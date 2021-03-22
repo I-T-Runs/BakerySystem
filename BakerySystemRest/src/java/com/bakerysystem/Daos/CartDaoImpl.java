@@ -7,6 +7,7 @@ package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.Cart;
 import com.bakerysystem.Model.ProductLineItem;
+import com.bakerysystem.properties.BSConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,18 +30,26 @@ public class CartDaoImpl implements CartDao {
     
     public CartDaoImpl() {
     
-                try {
+              try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
 			e.printStackTrace();
 		}
-	
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
-		try {
-			myCon10 = DriverManager.getConnection(url,"root","root");
+		
+//		String url = "jdbc:mysql://localhost:3306/cakeshop";
+                String URL = "jdbc:mysql://"+new BSConfig().getDbhost()+":3306/cakeshop";
+		try { 
+                    //                                           created user [ initialise with BSConfig ]
+			myCon10 = DriverManager.getConnection(URL,"mthiz","root");
 		} catch (SQLException e) {
-			e.printStackTrace();
+                    System.out.println("\n"+e.getMessage()+"\n");
+			 try {
+                URL = "jdbc:mysql://localhost:3306/cakeshop";
+                myCon10 = DriverManager.getConnection(URL, "root", "root");
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
 		}
     
     }
@@ -65,27 +74,42 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public Cart getCart(int customerID) {
-       int cartId = 0;
+       Cart c = new Cart();
        ArrayList<ProductLineItem> prods =new ArrayList();
-       
         try {
             //ps = myCon10.prepareStatement("SELECT CARTID, PRODUCTID, PRODUCTNAME, QUANTITY WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
-            ps = myCon10.prepareStatement("SELECT CARTID, PRODUCTID, QUANTITY FROM CARTTABLE WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
+            ps = myCon10.prepareStatement("SELECT PRODUCTID, QUANTITY FROM CARTTABLE WHERE CUSTOMERID = ?");
 
             ps.setInt(1, customerID);
             rs = ps.executeQuery();
      
             while(rs.next()){
-                cartId = rs.getInt("CARTID");
-                prods.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY")));
+                int prodID = rs.getInt("PRODUCTID");
+                String pliName = new ProductDaoImpl().getProduct(prodID).getProductName();
+                int qnty = rs.getInt("QUANTITY");
+                prods.add(new ProductLineItem(prodID, pliName,qnty));
             }
-            if(!prods.isEmpty()){
-                
-                return new Cart(customerID, prods, cartId);
+            if(!prods.isEmpty()){                
+                c.setProducts(prods);
+                return c;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CartDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-        return new Cart(customerID,cartId);
+            ex.getMessage();
+        }       
+        c.setProducts(null);
+        return c;
+    }
+    
+    public static void main(String [] args){
+           
+        Cart c = new CartDaoImpl().getCart(1);
+        for (ProductLineItem product : c.getProducts()) {
+             System.out.println("Product\t" + " | " + "Quantity");
+             System.out.println(product.getProductName() + " | " + product.getQuantity());
+        }
+    }
+
+    public boolean updateCart(Cart cart) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

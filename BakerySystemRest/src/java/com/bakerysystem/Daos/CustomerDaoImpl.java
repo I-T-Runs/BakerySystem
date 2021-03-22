@@ -1,6 +1,7 @@
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.Customer;
+import com.bakerysystem.properties.BSConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,18 +24,26 @@ public class CustomerDaoImpl implements CustomerDao {
     public CustomerDaoImpl() {
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
-            e.printStackTrace();
-        }
-
-        String url = "jdbc:mysql://localhost:3306/cakeshop";
-        try {
-            myCon30 = DriverManager.getConnection(url, "root", "root");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
+			e.printStackTrace();
+		}
+		
+//		String url = "jdbc:mysql://localhost:3306/cakeshop";
+                String URL = "jdbc:mysql://"+new BSConfig().getDbhost()+":3306/cakeshop";
+		try { 
+                    //                                           created user [ initialise with BSConfig ]
+			myCon30 = DriverManager.getConnection(URL,"mthiz","root");
+		} catch (SQLException e) {
+                    System.out.println("\n"+e.getMessage()+"\n");
+			 try {
+                URL = "jdbc:mysql://localhost:3306/cakeshop";
+                myCon30 = DriverManager.getConnection(URL, "root", "root");
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
+		}
     }
     
 
@@ -64,8 +73,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
         try {
             ps = myCon30.prepareStatement("SELECT CUSTOMERID, FIRSTNAME, LASTNAME, EMAIL, TELEPHONEHOME, TELEPHONEMOBILE, ID, ADDRESSID, PASSWORD "
-              + "FROM CUSTOMERTABLE "
-              + "WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
+                                        + "FROM CUSTOMERTABLE "
+                                        + "WHERE CUSTOMERID = ? AND ACTIVITY = 'ACTIVE'");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
 

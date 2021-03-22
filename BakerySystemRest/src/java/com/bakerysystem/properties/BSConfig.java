@@ -52,6 +52,13 @@ public class BSConfig {
             System.err.println(ex.getMessage());
         }
     }
+    
+     public static void main(String[] args) {
+        // properties changer... run this to change properties [ REST Host , REST Port , Database Host ]
+        BSConfig config = new BSConfig("localhost", 8080, "192.168.43.41");
+        System.out.println(config);
+    }
+    
     public String getHost() {
         return host;
     }
@@ -77,11 +84,5 @@ public class BSConfig {
         return "BSConfig{\n\t" + " filename=" + filename + ",\n\t host=" + host + ",\n\t port=" + port + ",\n\t dbhost=" + dbhost + "\n}";
     }
 
-    public static void main(String[] args) {
-        // testing
-
-        BSConfig config = new BSConfig("localhost", 8080, "localhost");
-
-        System.out.println(config);
-    }
+   
 }

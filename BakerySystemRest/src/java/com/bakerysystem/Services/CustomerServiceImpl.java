@@ -12,6 +12,7 @@ import com.bakerysystem.Daos.CustomerDaoImpl;
 import com.bakerysystem.Daos.UserDao;
 import com.bakerysystem.Daos.UserDaoImpl;
 import com.bakerysystem.Model.Customer;
+import com.bakerysystem.Model.ProductLineItem;
 import com.bakerysystem.Model.User;
 import java.util.ArrayList;
 
@@ -64,11 +65,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public static void main(String[] args) {
-         boolean c = new CustomerServiceImpl().confirmEmail("Dave@gmail.com");
-         
-         String res = c == true ? "Success" : "FAILED";
-         
-         System.out.println(res);
+         Customer c = new CustomerServiceImpl().login("email0@gmail","password");
+         System.out.println(c.getFirstName() + "'s Cart: ");
+         for (ProductLineItem product : c.getCart().getProducts()) {
+             System.out.println("Product\t" + "  " + "Quantity");
+             System.out.println(product.getProductName() + "  " + product.getQuantity());
+        }
+       
     }
     
     @Override

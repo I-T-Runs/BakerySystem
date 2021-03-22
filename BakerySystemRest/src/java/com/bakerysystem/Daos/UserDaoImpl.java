@@ -1,7 +1,7 @@
-
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.User;
+import com.bakerysystem.properties.BSConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,10 +19,10 @@ public class UserDaoImpl implements UserDao {
 
     private Connection myCon8;
     private PreparedStatement ps;
-    private ResultSet rs; 
+    private ResultSet rs;
 
     public UserDaoImpl() {
-    
+
         try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -30,37 +30,44 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
-		try {
-			myCon8 = DriverManager.getConnection(url,"root","root");
+//		String url = "jdbc:mysql://localhost:3306/cakeshop";
+                String URL = "jdbc:mysql://"+new BSConfig().getDbhost()+":3306/cakeshop";
+		try { 
+                    //                                           created user [ initialise with BSConfig ]
+			myCon8 = DriverManager.getConnection(URL,"mthiz","root");
 		} catch (SQLException e) {
-			e.printStackTrace();
+                    System.out.println("\n"+e.getMessage()+"\n");
+			 try {
+                URL = "jdbc:mysql://localhost:3306/cakeshop";
+                myCon8 = DriverManager.getConnection(URL, "root", "root");
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
 		}
     }
 
-
     @Override
     public User getUser(String email, String password) {
-        
+
         try {
             ps = myCon8.prepareStatement("SELECT USERID, EMAIL, PASSWORD, USERTYPE FROM USERSTABLE WHERE EMAIL = ? AND PASSWORD = ? AND ACTIVITY = 'ACTIVE'");
             ps.setString(1, email);
             ps.setString(2, password);
             rs = ps.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 return new User(rs.getInt("USERID"), rs.getString("EMAIL"), rs.getString("PASSWORD"), rs.getString("USERTYPE"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
         return null;
     }
 
     @Override
     public boolean removeUser(int userID) {
         int check = 0;
-        
+
         try {
             ps = myCon8.prepareStatement("UPDATE USERSTABLE SET ACTIVITY = 'INACTIVE' WHERE USERID = ?");
             ps.setInt(1, userID);
@@ -72,11 +79,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateUser(User user) {
-       int check = 0;
-       
+        int check = 0;
+
         try {
             ps = myCon8.prepareStatement("UPDATE USERSTABLE SET EMAIL = ?, PASSWORD = ?, USERTYPE = ? WHERE USERID = ?");
-           // ps.setString(1, user.getUserName());
+            // ps.setString(1, user.getUserName());
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getUserType());
@@ -91,7 +98,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean addUser(User user) {
         int check = 0;
-        
+
         try {
             ps = myCon8.prepareStatement("INSERT INTO USERSTABLE(USERID,EMAIL,PASSWORD,USERTYPE,ACTIVITY) VALUES(NULL,?,?,?,'ACTIVE')");
             //ps.setString(1, user.getUserName());
@@ -99,24 +106,24 @@ public class UserDaoImpl implements UserDao {
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getUserType());
             check = ps.executeUpdate();
-                    } catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        }
         return (check == 1);
     }
 
     @Override
     public ArrayList<User> getAllUsers() {
-        ArrayList<User>listOfUsers = new ArrayList();
-        
+        ArrayList<User> listOfUsers = new ArrayList();
+
         try {
             ps = myCon8.prepareStatement("SELECT USERID, EMAIL, PASSWORD, USERTYPE FROM USERSTABLE WHERE ACTIVITY = 'ACTIVE'");
             rs = ps.executeQuery();
-            
-            while(rs.next()){           
+
+            while (rs.next()) {
                 listOfUsers.add(new User(rs.getInt("USERID"), rs.getString("EMAIL"), rs.getString("PASSWORD"), rs.getString("USERTYPE")));
             }
-                    } catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listOfUsers;
@@ -127,5 +134,4 @@ public class UserDaoImpl implements UserDao {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-  
 }

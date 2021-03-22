@@ -10,18 +10,17 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(int customerId, ArrayList<ProductLineItem> listOfProducts, int cartId) {
-        super();
-        this.customerId = customerId;
-        this.products = listOfProducts;
-        this.cartId = cartId;
-    }
+//    public Cart(int customerId, ArrayList<ProductLineItem> listOfProducts, int cartId) {
+//        super();
+//        this.customerId = customerId;
+//        this.products = listOfProducts;
+//        this.cartId = cartId;
+//    }
     
-    public Cart(int customerId,int cartId){
+    public Cart(int customerId,ArrayList<ProductLineItem> listOfProducts){
         super();
         this.customerId=customerId;
-        this.cartId=cartId;
-        
+        this.products = listOfProducts;
     }
 
     public int getCustomerId() {

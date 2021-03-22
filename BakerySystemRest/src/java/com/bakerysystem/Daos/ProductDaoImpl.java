@@ -3,6 +3,7 @@ package com.bakerysystem.Daos;
 import com.bakerysystem.Model.Ingredient;
 import com.bakerysystem.Model.Product;
 import com.bakerysystem.Services.ProductServiceImpl;
+import com.bakerysystem.properties.BSConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,23 +27,26 @@ public class ProductDaoImpl implements ProductDao {
 
     public ProductDaoImpl() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
-            e.printStackTrace();
-        }
-
-        String url = "jdbc:mysql://localhost:3306/cakeshop";
-        try {
-            myCon = DriverManager.getConnection(url, "root", "root");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-//        new ProductDaoImpl().addProduct(0, "Product " + 0,".\\images\\imagename"+0+".file",111,10.99,0,null,"I am a product description","And This here is a warning");
-//       System.out.println(new ProductDaoImpl().getProducts().get(0).getProductName());
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
+			e.printStackTrace();
+		}
+		
+//		String url = "jdbc:mysql://localhost:3306/cakeshop";
+                String URL = "jdbc:mysql://"+new BSConfig().getDbhost()+":3306/cakeshop";
+		try { 
+                    //                                           created user [ initialise with BSConfig ]
+			myCon = DriverManager.getConnection(URL,"mthiz","root");
+		} catch (SQLException e) {
+                    System.out.println("\n"+e.getMessage()+"\n");
+			 try {
+                URL = "jdbc:mysql://localhost:3306/cakeshop";
+                myCon = DriverManager.getConnection(URL, "root", "root");
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
+		}
     }
 
     @Override
@@ -78,6 +82,14 @@ public class ProductDaoImpl implements ProductDao {
         }
         return true;
     }
+    
+     public static void main(String[] args) {
+//        new ProductDaoImpl().addProduct(0, "Product " + 0,".\\images\\imagename"+0+".file",111,10.99,0,null,"I am a product description","And This here is a warning");
+//       System.out.println(new ProductDaoImpl().getProducts().get(0).getProductName());
+        System.out.println(new ProductDaoImpl().getProducts());
+        
+    }
+
 
     @Override
     public Product getProduct(int productId) {

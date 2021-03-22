@@ -6,6 +6,7 @@
 package com.bakerysystem.Daos;
 
 import com.bakerysystem.Model.AddressClass;
+import com.bakerysystem.properties.BSConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,6 +25,7 @@ public class AddressDaoImpl implements AddressDao{
     private Connection myCon7;
     private PreparedStatement ps;
     private ResultSet rs;
+    private String URL;
     
     public AddressDaoImpl() {
     
@@ -34,12 +36,24 @@ public class AddressDaoImpl implements AddressDao{
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
-		try {
-			myCon7 = DriverManager.getConnection(url,"root","root");
+//		String url = "jdbc:mysql://localhost:3306/cakeshop";
+                URL = "jdbc:mysql://"+new BSConfig().getDbhost()+":3306/cakeshop";
+		try { 
+                    //                                           created user [ initialise with BSConfig ]
+			myCon7 = DriverManager.getConnection(URL,"mthiz","root");
 		} catch (SQLException e) {
-			e.printStackTrace();
+                    System.out.println("\n"+e.getMessage()+"\n");
+			 try {
+                URL = "jdbc:mysql://localhost:3306/cakeshop";
+                myCon7 = DriverManager.getConnection(URL, "root", "root");
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
 		}
+    }
+    
+    public static void main(String [] args){
+        System.out.println(new AddressDaoImpl().URL);
     }
 
     
