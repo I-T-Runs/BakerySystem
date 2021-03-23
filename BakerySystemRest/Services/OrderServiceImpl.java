@@ -6,7 +6,6 @@
 package com.bakerysystem.Services;
 
 import com.bakerysystem.Model.Order;
-import com.bakerysystem.Model.Product;
 import com.bakerysystem.Model.ProductLineItem;
 import com.bakerysystem.dao.IngredientDao;
 import com.bakerysystem.dao.IngredientDaoImpl;
@@ -39,7 +38,7 @@ public class OrderServiceImpl implements OrderService{
        
         if(done == true){
             for(ProductLineItem pli: order.getOrderLineArr()){
-             done = ingrD.reduceIngredients(prodD.getProduct(pli.getProductID()).getRecipeArr());
+             done = ingrD.reduceIngredients(prodD.getProduct(pli.getProductID()).getRecipeArr(), pli.getQuantity());
             }
         }
         return done;

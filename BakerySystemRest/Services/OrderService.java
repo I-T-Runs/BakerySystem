@@ -19,4 +19,6 @@ public interface OrderService {
     ArrayList<Order> getDeliveredOrders();
     ArrayList<Order> OustandingOrders();
     ArrayList<Order> PreparedOrders();
+    boolean cancelOrder(int orderId);
+    ArrayList<Order> getOrdersByCustomer(int customerId);
 }
