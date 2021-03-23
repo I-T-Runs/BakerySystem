@@ -6,6 +6,7 @@
 package com.bakerysystem.client;
 
 import com.bakerysystem.Model.Product;
+import com.bakerysystem.properties.BSConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,21 +21,25 @@ import java.util.logging.Logger;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericEntity;
 
 /**
  *
  * @author Themba
  */
 public class ProductsHandler {
-
-    public static ArrayList<Product> receiveProducts() {
+    private String URL ;
+    
+    public ProductsHandler(){
+        URL = new BSConfig().getURL("products");
+    }
+    
+    public ArrayList<Product> receiveProducts() {
         ArrayList<Product> catalogue = null;
         Product [] products = null;
         try {
             catalogue = new ArrayList<>();
             
-            String url = "http://10.7.7.111:8084/BakerySystemRest/app/products/catalogue";
+            String url = URL + "catalogue";
             Client restClient = ClientBuilder.newClient();
             WebTarget webTarget = restClient.target(url);
             System.out.println("Fetching Products...");
@@ -44,7 +49,6 @@ public class ProductsHandler {
             products = ob.readValue(s, Product[].class) ;
 //            System.out.println("RETURNED :\n " + prod);
             
-            return null;
         } catch (Exception ex) {
             Logger.getLogger(ProductsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,8 +57,8 @@ public class ProductsHandler {
         return catalogue;
     }
     
-    public static Product recieveProduct(int productID) {
-        String url = "http://10.7.7.111:8084/BakerySystemRest/app/product/{productid}";
+    public Product recieveProduct(int productID) {
+        String url = URL + "product/{productid}";
         Client restClient = ClientBuilder.newClient();
         WebTarget webTarget = restClient.target(url).resolveTemplate("productid", productID);
         System.out.println("Fetching Product...");
@@ -62,6 +66,7 @@ public class ProductsHandler {
         
         ObjectMapper ob = new ObjectMapper();
         Product prod = null;
+        
         try {
             prod = ob.readValue(s, Product.class);
         } catch (IOException ex) {

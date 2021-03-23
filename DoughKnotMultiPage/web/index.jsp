@@ -1247,17 +1247,18 @@
             <p><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: +2777 898 7654</p>
             <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: thedoughknotbakery@gmail.com</p>
             <br>
-            <form action="" target="_blank">
-                <p><input class="w3-input w3-border" type="text" placeholder="Name" required name="Name"></p>
-                <p><input class="w3-input w3-border" type="text" placeholder="Email" required name="Email"></p>
-                <p><input class="w3-input w3-border" type="text" placeholder="Subject" required name="Subject"></p>
-                <p><input class="w3-input w3-border" type="text" placeholder="Message" required name="Message"></p>
+            <form > <!-- action="" target="_blank"    method="POST" action="ContactUs"-->
+                <p><input class="w3-input w3-border" type="text" placeholder="Name" required name="txtName"></p>
+                <p><input class="w3-input w3-border" type="text" placeholder="Email" required name="txtSendersEmail"></p>
+                <p><input class="w3-input w3-border" type="text" placeholder="Subject" required name="txtSubject"></p>
+                <p><input class="w3-input w3-border" type="text" placeholder="Message" required name="txtMessage"></p>
                 <p>
                     <button class="w3-button w3-black" type="submit">
                         <i class="fa fa-paper-plane"></i> SEND MESSAGE
                     </button>
                 </p>
             </form>
+            <div name="contactUsResult" ></div>
         </div>
     </div>
 </editor-fold>

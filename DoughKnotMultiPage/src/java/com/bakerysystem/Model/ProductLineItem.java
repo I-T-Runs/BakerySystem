@@ -22,6 +22,17 @@ public class ProductLineItem {
 	public int getQuantity() {
 		return quantity;
 	}
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+        
+        
+        
 	@Override
 	public String toString() {
 		return "ProductLineItem [productID=" + productID + ", productName=" + productName + ", quantity=" + quantity

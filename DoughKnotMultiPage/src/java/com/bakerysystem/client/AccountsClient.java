@@ -27,21 +27,21 @@ import javax.ws.rs.core.Response;
  */
 public class AccountsClient {
 
-    private final static String URL = new BSConfig().getURL("users");
+    private String URL ;//= new BSConfig().getURL("users");
 
     public AccountsClient() {
-        System.out.println(URL);
-
+        URL = new BSConfig().getURL("users");
     }
 
      public static void main(String[] args) {
+         System.out.println("****"+new AccountsClient().URL);
 //          for(Customer c : new AccountsClient().getAllAccounts()){
 //              System.out.println(c.getFirstName());
 //          }
 //        String s = new AccountsClient().updateDetails(new Customer(16, "firstname", "lastname", "email", "tel-home", "mobile-no", "identityNo", 0, "password")); // 
 //        String s = new AccountsClient().remove(13); // 
 //        System.out.println(s);
-        new AccountsClient().register(new Customer(0, "firsjhgvtname", "lastname", "emalkmil", "tel-home", "mobile-no", "identityNo", 0, "password"));
+        //new AccountsClient().register(new Customer(0, "firsjhgvtname", "lastname", "emalkmil", "tel-home", "mobile-no", "identityNo", 0, "password"));
 //        Customer u = new AccountsClient().login("email0@gmail", "password");
 //        System.out.println(u.getFirstName());
 //        if(u == null){
@@ -61,7 +61,7 @@ public class AccountsClient {
 //            map.put("password", password);
 //            WebTarget webTarget = client.target(URL + "login/{username}/{password}").resolveTemplate(map.keySet(),map.values());
 //            //"http://localhost:8080/BakerySystemRest/app/"
-            WebTarget webTarget = client.target("http://localhost:8080/BakerySystemRest/app/users/" + "login/" + username + "/" + password);
+            WebTarget webTarget = client.target(URL + "login/" + username + "/" + password);
             System.out.println("Fetching User...");
             String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
             ObjectMapper ob = new ObjectMapper();
@@ -75,7 +75,7 @@ public class AccountsClient {
 
     public String recoverAccount(String providedEmail) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080/BakerySystemRest/app/users/recover/{email}").resolveTemplate("email", providedEmail);
+        WebTarget target = client.target(URL + "recover/{email}").resolveTemplate("email", providedEmail);
 
         String r = target.request().accept("application/json").get(String.class);
 
@@ -87,7 +87,7 @@ public class AccountsClient {
         Response generatedResponse = null;
         try {
             Client client = ClientBuilder.newClient();
-            WebTarget target = client.target("http://localhost:8080/BakerySystemRest/app/users/register");//client.target(URL + "register");
+            WebTarget target = client.target(URL + "register");//client.target(URL + "register");
 
             Response r = target.request().post(Entity.json(convert2Json(newUser)));//post(Entity.json(Helper.convert2Json(newUser)));
 
