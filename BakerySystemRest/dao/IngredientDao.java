@@ -18,4 +18,5 @@ public interface IngredientDao {
     boolean updateIngredient(Ingredient ingred);
     boolean removeIngredient(int ingredientID);
     ArrayList<Ingredient> getAllIngredients();
+    boolean reduceIngredients(ArrayList<Ingredient> recipe, int quantity);
 }

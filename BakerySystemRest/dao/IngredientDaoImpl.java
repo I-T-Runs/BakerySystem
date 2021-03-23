@@ -6,8 +6,8 @@
 package com.bakerysystem.dao;
 
 import com.bakerysystem.Model.Ingredient;
+import com.bakerysystem.databaseAccess.DBManager;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class IngredientDaoImpl implements IngredientDao{
 
-     private Connection myCon2;
+    private Connection myCon2;
     private PreparedStatement ps;
     private ResultSet rs;
    
@@ -29,18 +29,10 @@ public class IngredientDaoImpl implements IngredientDao{
     public IngredientDaoImpl() {
     
         try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
-			e.printStackTrace();
-		}
-		
-		String url = "jdbc:mysql://localhost:3306/cakeshop";
-		try {
-			myCon2 = DriverManager.getConnection(url,"root","root");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            myCon2 = DBManager.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(IngredientDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
@@ -119,5 +111,48 @@ public class IngredientDaoImpl implements IngredientDao{
         }
         return listOfIngredients;
     }
+
+    @Override
+    public boolean reduceIngredients(ArrayList<Ingredient> recipe , int quantity) {
+       int check = 0;
+         try {
+             for(Ingredient ing: recipe){
+               ps = myCon2.prepareStatement("UPDATE INGREDIENTABLE SET QUANTITY = (QUANTITY - ?) WHERE INGREDIENTID = ?");
+               ps.setInt(1, (ing.getQuantity()*quantity));
+               ps.setInt(2, ing.getIngredientId());
+               check = ps.executeUpdate();
+             }
+         } catch (SQLException ex) {
+             Logger.getLogger(IngredientDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+         }finally{
+             closeStreams();
+         }
+         return (check > 1);
+    }
     
+        private synchronized void closeStreams() {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (myCon2!= null) {
+            try {
+                myCon2.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
 }
