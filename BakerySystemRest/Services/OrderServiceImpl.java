@@ -6,8 +6,14 @@
 package com.bakerysystem.Services;
 
 import com.bakerysystem.Model.Order;
+import com.bakerysystem.Model.Product;
+import com.bakerysystem.Model.ProductLineItem;
+import com.bakerysystem.dao.IngredientDao;
+import com.bakerysystem.dao.IngredientDaoImpl;
 import com.bakerysystem.dao.OrderDao;
 import com.bakerysystem.dao.OrderDaoImpl;
+import com.bakerysystem.dao.ProductDao;
+import com.bakerysystem.dao.ProductDaoImpl;
 import java.util.ArrayList;
 
 /**
@@ -17,16 +23,26 @@ import java.util.ArrayList;
 public class OrderServiceImpl implements OrderService{
     
     private OrderDao od ;
+    private IngredientDao ingrD;
+    private ProductDao prodD;
 
     public OrderServiceImpl() {
-        
         od = new OrderDaoImpl();
-    
+        ingrD  = new IngredientDaoImpl();
+        prodD = new ProductDaoImpl();
     }
 
     @Override
     public boolean addOrder(Order order) {
-        return od.addOrder(order);
+        
+        boolean done = od.addOrder(order);
+       
+        if(done == true){
+            for(ProductLineItem pli: order.getOrderLineArr()){
+             done = ingrD.reduceIngredients(prodD.getProduct(pli.getProductID()).getRecipeArr());
+            }
+        }
+        return done;
     }
 
     @Override
@@ -52,5 +68,15 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public ArrayList<Order> PreparedOrders() {
         return od.PreparedOrders();
+    }
+
+    @Override
+    public boolean cancelOrder(int orderId) {
+        return od.removeOrder(orderId);
+    }
+
+    @Override
+    public ArrayList<Order> getOrdersByCustomer(int customerId) {
+        return od.getOrdersByCustomer(customerId);
     }
 }
