@@ -1,17 +1,21 @@
-package com.bakerysystem.Daos;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.bakerysystem.dao;
 
 import com.bakerysystem.Model.Product;
 import java.util.ArrayList;
 
 /**
- * @author Themba
+ *
+ * @author keoagile
  */
 public interface ProductDao {
-    public Product getProduct(int productId);             
+    boolean addProduct(Product product);
+    Product getProduct(int productId);
+    ArrayList<Product> getProducts();
     public boolean removeProduct(int productId);
-    public boolean addProduct(Product prod);
-    public boolean updateProduct(Product prod);         // we're 
-    public ArrayList<Product> getProducts();              // return array 
-    public ArrayList<Product> getProductByCategory(int productId); // plain get by category
-    public ArrayList<Product> searchForProduct(String searchString); // the select where piece of text is something sql
+    public boolean updateProduct(Product prod); 
 }
