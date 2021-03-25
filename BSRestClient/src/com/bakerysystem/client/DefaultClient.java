@@ -1,100 +1,124 @@
+  /*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.bakerysystem.client;
 
+import com.bakerysystem.Model.Customer;
+import com.bakerysystem.Model.Product;
 import com.bakerysystem.extraz.Helper;
-import com.bakerysystem.model.Customer;
-import com.bakerysystem.model.Product;
 import com.bakerysystem.properties.BSConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Default Client [THE DOER OF ALL THINGS CRUD]
- *  - Don't ask why I created this guy [SECRET: Probably got lazy again]
- * 
+ * Default Client [THE DOER OF ALL THINGS CRUD] - Don't ask why I created this
+ * guy [SECRET: Probably got lazy again]
+ *
  * @author Themba
  */
-public class DefaultClient <T> {
-    
+public class DefaultClient<T> {
+
     private String URL;
-    
-    public DefaultClient(String parentPathOfFunctions){
+
+    public DefaultClient(String parentPathOfFunctions) {
         URL = new BSConfig().getURL(parentPathOfFunctions);
+        System.out.println(URL);
     }
-    
-    public String create(T obj, String methodPath){
+
+    public String create(T obj, String methodPath) {
         String responseRes;
-        
+
         {
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target(URL + methodPath);
-            
+
             responseRes = target.request().post(Entity.json(Helper.convert2Json(obj))).readEntity(String.class);
         }
+
+        return responseRes;
+    }
+
+    //   Create : CHECKED | Retrieve : _all__|_1_ : CHECKED | Update : CHECKED | Delete : CHECKED        
+public static void main(String[] args) {
+    try{
+        /*
+        DefaultClient dc = new DefaultClient("products");
+    ArrayList<Product> arr = dc.getAll("catalogue");
+        */
         
-        return "RESPONSE: "+ responseRes;
-    }
-    
-     //   Create : CHECKED | Retrieve : _all__|_1_ : CHECKED | Update : CHECKED | Delete : CHECKED        
-    public static void main(String [] agr){
-       DefaultClient dc = new DefaultClient<>("products");
-
-       for(int i = 0 ; i < 10 ; i++){
-           Product prod = new Product(0, "Chocolate moose " + i, "picture", 0, 45.33 + i, 0, null, "Description", "Warnings");
-           dc.create(prod, "add-product");
-       }
-       
-       String res = dc.create(dc, "");
-       // getAll
-       System.out.println(dc.getAll("catalogue"));
-    }
-    
-    public   ArrayList<T> getAll(String methodPath) {
-        ArrayList<T> objects = null;//T [] objects = null;
-        try {
-            Client client = ClientBuilder.newClient();
-            WebTarget webTarget = client.target(URL + methodPath);
-
-            
-            System.out.println("Fetching User...");
-            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
-
-            ObjectMapper ob = new ObjectMapper();
-            T [] multInst = (T[]) (T) ob.readValue(s, Object[].class);
-            objects = new ArrayList(Arrays.asList(multInst)); 
-            
-        } catch (Exception ex) {
-            System.err.println("ERROR: Couldnt retrieve product");
+        DefaultClient<Product> dc = new DefaultClient("users");
+        
+        List<Product> arr = dc.getAll("accounts");
+        System.out.println((Product)arr.get(0));
+        System.out.println(arr.get(1));
+//        ArrayList<Product> arrr = new ArrayList();
+        for (Product product : arr) {
+            System.out.println(product.getProductName());
+//              arrr.add(product);
         }
-
-        return objects;
+        
+    }catch(Exception ex){
+        System.out.println("The error -> " + ex.getMessage());
     }
     
-    public   T get(int objID, String methodPath) {
-        T obj = null;
+    }
+        
+//        DefaultClient dc = new DefaultClient<>("users");
+//        String response = dc.get(17, "user/{id}").toString();//.getAll("accounts").toString();//.get(17, "user/{id}").toString();//.create(new Customer("Themba", "Ndwandwe", "themba.ndwandwe@yahoo.com", "NA", "0823527###", "#############", 101, "password"), "register"); //.remove(14, "remove/{id}");//.update(new Customer(8, "first", "last", "email@something.com", "tel-home", "mobile-no", "identityNo", 0, "password"), "editdetails");
+//        System.out.println(response);
+    
+
+    public List<Product> getAll(String methodPath) {
+        Object objects = null;//T [] objects = null;
+       List<Product> products = null;
+//        try {
+//            Client client = ClientBuilder.newClient();
+//            WebTarget webTarget = client.target(URL + methodPath);
+//
+//            System.out.println("Fetching User...");
+//            
+//            String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+//System.out.println(s);
+//            ObjectMapper ob = new ObjectMapper();
+//            Object[]multInst =  Arrays.as(ob.readValue(s, Customer[].class));
+//            System.out.println(((Customer)multInst[0]).getFirstName());
+////            objects = Arrays.asList(multInst);
+//          //  products = (List<Product>) multInst;
+//        } catch (Exception ex) {
+//            System.err.println(ex.getMessage());
+//        }
+
+        return products;
+    }
+
+    public T get(int objID, String methodPath) {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget webTarget = client.target(URL + methodPath).resolveTemplate("id", objID);
 
-            
             System.out.println("Fetching User...");
             String s = webTarget.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 
             System.out.println(s);
-            
-            ObjectMapper ob = new ObjectMapper();
-            obj =  (T) ob.readValue(s, Object.class);
 
-            
+            ObjectMapper ob = new ObjectMapper();
+            T obj = (T) ob.readValue(s, Object.class);
+
+            return obj;
         } catch (Exception ex) {
             System.err.println("ERROR: Couldnt retrieve product");
         }
-        return obj;
+
+        return null;
     }
-    
+
     public String update(T cus, String methodPath) {
         Response generatedResponse = null;
         String s = "";
@@ -110,7 +134,7 @@ public class DefaultClient <T> {
         }
         return s;
     }
-    
+
     public String remove(int objId, String methodPath) {
         //Response generatedResponse = null;
         String s = "";
@@ -127,5 +151,5 @@ public class DefaultClient <T> {
     }
     
    
-    
+
 }

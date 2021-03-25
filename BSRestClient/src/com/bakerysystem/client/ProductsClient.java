@@ -1,68 +1,87 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.bakerysystem.client;
 
-import com.bakerysystem.model.Category;
-import com.bakerysystem.model.Product;
-import com.bakerysystem.extraz.Helper;
-import com.bakerysystem.properties.BSConfig;
+import com.bakerysystem.Model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.awt.Image;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  *
  * @author Themba
  */
 public class ProductsClient {
-
-    private final static String URL = new BSConfig().getURL("shop");
-    private DefaultClient<Product> dc;
-
-    public ProductsClient() {
-        dc = new DefaultClient<>("products");
-    }
-
-    public String addCategory(Product prod) {
-        return dc.create(prod, "add");
-    }
-
-    public Product getProduct(int prodid) {
-        return dc.get(prodid, "product/{id}");
-    }
-
-    public String remove(int prodId) {
-        return dc.remove(prodId, "remove");
-    }
-
-    public String updateDetails(Product prod) {
-        return dc.update(prod, "edit");
-    }
-
-    public ArrayList<Product> getAllProducts() {
-        return dc.getAll("all-products");
-    }
+//    private static String url;
+   // private String URL = new BSConfig().getURL("products");
+    private String URL = "http://localhost:8080/BakerySystemRest/app/products/";
     
-    public static void main(String [] args){
+    DefaultClient<Product> dc ;
+    
+    public ProductsClient(){
+        dc = new DefaultClient<Product>("products");
         System.out.println(URL);
+//        URL = new BSConfig().getURL("products");
     }
 
-    // CSS - URL
-    // URL(52.233.233:doata/images/j.jpg
+    public ArrayList<Product> recieveProducts() {
+       
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(URL + "catalogue");
+        ArrayList<Product> rr = new ArrayList();
+        try {
+            rr = new ArrayList(Arrays.asList(new ObjectMapper().readValue(target.request().accept(MediaType.APPLICATION_JSON).get(String.class), Product[].class)));
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return rr;
+        
+//        return catalogue;
+    }
+
+    public Product recieveProduct(int productID){
+        
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(URL + "product/{id}").resolveTemplate("id",productID);
+        
+        Product prod = null;
+        try {
+            prod = new ObjectMapper().readValue(target.request().accept(MediaType.APPLICATION_JSON).get(String.class), Product.class);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductsClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return prod;
+        
+    }
+
+    public  String addProduct(Product newProd) {
+       
+        return dc.create(newProd, "add-product") ;
+    }
+
+    public static void main(String [] args){
+        
+//            System.out.println(new ProductsClient().recieveProduct(1).getProductName());
+            //        System.out.println();
+            ArrayList<Product> arr = new ProductsClient().recieveProducts();
+            if(arr.isEmpty()){
+                System.out.println("yebo iyabheda");
+            }
+            for (Product object : arr) {
+                System.out.println(object.getProductName());
+            }
+        
+    }
 }
