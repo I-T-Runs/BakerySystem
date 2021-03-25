@@ -7,7 +7,9 @@ package com.bakerysystem.dao;
 
 import com.bakerysystem.Model.Order;
 import com.bakerysystem.Model.ProductLineItem;
+import com.bakerysystem.databaseAccess.DBManager;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,18 +30,10 @@ public class OrderDaoImpl implements OrderDao{
     private ResultSet rs;
 
     public OrderDaoImpl() {
-           try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
-            e.printStackTrace();
-        }
-
-        String url = "jdbc:mysql://localhost:3306/cakeshop?";
         try {
-            con1 = DriverManager.getConnection(url, "root", "root");
-        } catch (SQLException e) {
-            e.printStackTrace();
+            con1 = DBManager.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -47,16 +41,16 @@ public class OrderDaoImpl implements OrderDao{
     public boolean addOrder(Order order) {
         int check = 0;
         int id = 0;
+        Date time = new Date(id);
         
         try {
             con1.setAutoCommit(false);
-            ps = con1.prepareStatement("INSERT INTO ORDERSTABLE(ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS) VALUES(NULL,?,?,'PREPARING',?,?,?)");
+            ps = con1.prepareStatement("INSERT INTO ORDERSTABLE(ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS) VALUES(NULL,?,?,'PREPARING',CURDATE(),?,?)");
             ps.setInt(1, order.getCustomerId());
             ps.setDouble(2, order.getTotalPrice());
             ps.setString(3, order.getOrderStatus());
             ps.setInt(4, order.getDeliveryAddressId());
-            ps.setDate(5, order.getOrderDate());
-            ps.setString(6, order.getPaymentStatus());
+            ps.setString(5, order.getPaymentStatus());
             check = ps.executeUpdate();
         
             ps1 = con1.prepareStatement("SELECT LAST_INSERT_ID() AS ID");
@@ -320,4 +314,5 @@ public class OrderDaoImpl implements OrderDao{
         }
         return orders;
     }
+   
 }
