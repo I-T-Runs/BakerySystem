@@ -16,9 +16,7 @@ public interface OrderService {
      boolean addOrder(Order order);
     Order getOrder(int orderId);
     ArrayList<Order> getAllOrders();
-    ArrayList<Order> getDeliveredOrders();
-    ArrayList<Order> OustandingOrders();
-    ArrayList<Order> PreparedOrders();
+    ArrayList<Order> getOrdersByStatus(String status);
     boolean cancelOrder(int orderId);
     ArrayList<Order> getOrdersByCustomer(int customerId);
 }

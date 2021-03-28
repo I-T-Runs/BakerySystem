@@ -5,6 +5,7 @@
  */
 package com.bakerysystem.Services;
 
+import com.bakerysystem.Reports;
 import com.bakerysystem.Model.Order;
 import com.bakerysystem.Model.ProductLineItem;
 import com.bakerysystem.dao.IngredientDao;
@@ -55,21 +56,6 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public ArrayList<Order> getDeliveredOrders() {
-        return od.getDeliveredOrders();
-    }
-
-    @Override
-    public ArrayList<Order> OustandingOrders() {
-        return od.OustandingOrders();
-    }
-
-    @Override
-    public ArrayList<Order> PreparedOrders() {
-        return od.PreparedOrders();
-    }
-
-    @Override
     public boolean cancelOrder(int orderId) {
         return od.removeOrder(orderId);
     }
@@ -77,5 +63,10 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public ArrayList<Order> getOrdersByCustomer(int customerId) {
         return od.getOrdersByCustomer(customerId);
+    }
+
+    @Override
+    public ArrayList<Order> getOrdersByStatus(String status) {
+        return od.getOrdersByStatus(status);
     }
 }
