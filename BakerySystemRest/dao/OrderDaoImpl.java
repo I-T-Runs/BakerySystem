@@ -30,10 +30,24 @@ public class OrderDaoImpl implements OrderDao{
     private ResultSet rs;
 
     public OrderDaoImpl() {
+//        try {
+//            con1 = DBManager.getConnection();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
         try {
-            con1 = DBManager.getConnection();
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Failed to load JDBC/ODBC driver." + e.toString());
+            e.printStackTrace();
+        }
+
+        String URL = "jdbc:mysql://localhost:3306/cakeshop";
+        try {
+            con1 = DriverManager.getConnection(URL, "root", "root");
         } catch (SQLException ex) {
-            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getMessage();
         }
     }
     
@@ -41,16 +55,13 @@ public class OrderDaoImpl implements OrderDao{
     public boolean addOrder(Order order) {
         int check = 0;
         int id = 0;
-        Date time = new Date(id);
         
         try {
             con1.setAutoCommit(false);
-            ps = con1.prepareStatement("INSERT INTO ORDERSTABLE(ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS) VALUES(NULL,?,?,'PREPARING',CURDATE(),?,?)");
+            ps = con1.prepareStatement("INSERT INTO ORDERSTABLE(ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS) VALUES(NULL,?,?,'PREPARING',?,CURDATE())");
             ps.setInt(1, order.getCustomerId());
             ps.setDouble(2, order.getTotalPrice());
-            ps.setString(3, order.getOrderStatus());
-            ps.setInt(4, order.getDeliveryAddressId());
-            ps.setString(5, order.getPaymentStatus());
+            ps.setString(3, order.getDeliveryAddressId());
             check = ps.executeUpdate();
         
             ps1 = con1.prepareStatement("SELECT LAST_INSERT_ID() AS ID");
@@ -123,27 +134,26 @@ public class OrderDaoImpl implements OrderDao{
     public Order getOrder(int orderId) {
         Order order = null;
         try {
-            ps = con1.prepareStatement("SELECT ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE WHERE ORDERID = ? ");
-            ps.setInt(1, orderId);
-            rs = ps1.executeQuery();
-            if(rs.next()){
-                order = new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getInt("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS"));
-            }
-            
-            ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUTSTABLE.PRODUCTID WHERE ORDERID = ? ");
+            ps = con1.prepareStatement("SELECT CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE WHERE ORDERID = ? ");
             ps.setInt(1, orderId);
             rs = ps.executeQuery();
-            ArrayList<ProductLineItem> list = new ArrayList();
-            while(rs.next()){
-                list.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
+            if(rs.next()){
+                order = new Order(orderId, rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getString("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS"));
             }
-            order.setOrderLineArr(list);
+            
+            ps1 = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUCTSTABLE.PRODUCTID WHERE ORDERDETAILSTABLE.ORDERID = ? ");
+            ps1.setInt(1, orderId);
+            rs = ps1.executeQuery();
+            order.setOrderLineArr(new ArrayList<>());
+            while(rs.next()){
+                order.getOrderLineArr().add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             closeStreams(); 
         }
-        
         
         return order;
     }
@@ -155,100 +165,15 @@ public class OrderDaoImpl implements OrderDao{
             ps = con1.prepareStatement("SELECT ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE ");
             rs = ps.executeQuery();
             while(rs.next()){
-                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getInt("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
+                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getString("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
+            }
                 for(Order ord: orders){   
-                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUTSTABLE.PRODUCTID WHERE ORDERID = ? ");
+                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUCTSTABLE.PRODUCTID WHERE ORDERDETAILSTABLE.ORDERID = ? ");
                 ps.setInt(1, ord.getOrderID());
                 rs = ps.executeQuery();
-             ArrayList<ProductLineItem> list = new ArrayList();
+             ord.setOrderLineArr(new ArrayList<>());
              while(rs.next()){
-                    list.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
-                }
-             ord.setOrderLineArr(list);
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            closeStreams(); 
-        }
-        return orders;
-    }
-
-    @Override
-    public ArrayList<Order> getDeliveredOrders() {
-        ArrayList<Order> orders = new ArrayList();
-           try {
-            ps = con1.prepareStatement("SELECT ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE WHERE ORDERSTATUS = DELIVERED ");
-            rs = ps1.executeQuery();
-            while(rs.next()){
-                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getInt("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
-            
-            for(Order ord: orders){
-                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUTSTABLE.PRODUCTID WHERE ORDERID = ? ");
-                ps.setInt(1, ord.getOrderID());
-                rs = ps.executeQuery();
-                ArrayList<ProductLineItem> list = new ArrayList();
-                while(rs.next()){
-                    list.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
-                }
-                ord.setOrderLineArr(list);
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            closeStreams(); 
-        }
-        return orders;
-    }
-
-    @Override
-    public ArrayList<Order> OustandingOrders() {
-         ArrayList<Order> orders = new ArrayList();
-           try {
-            ps = con1.prepareStatement("SELECT ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE WHERE ORDERSTATUS = PREPARED ");
-            rs = ps1.executeQuery();
-            while(rs.next()){
-                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getInt("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
-            
-            for(Order ord: orders){
-                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUTSTABLE.PRODUCTID WHERE ORDERID = ? ");
-                ps.setInt(1, ord.getOrderID());
-                rs = ps.executeQuery();
-                ArrayList<ProductLineItem> list = new ArrayList();
-                while(rs.next()){
-                    list.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
-                }
-                ord.setOrderLineArr(list);
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            closeStreams(); 
-        }
-        return orders;
-    }
-
-    @Override
-    public ArrayList<Order> PreparedOrders() {
-         ArrayList<Order> orders = new ArrayList();
-           try {
-            ps = con1.prepareStatement("SELECT ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE WHERE ORDERSTATUS = PREPARING ");
-            rs = ps1.executeQuery();
-            while(rs.next()){
-                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getInt("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
-            
-            for(Order ord: orders){
-                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUTSTABLE.PRODUCTID WHERE ORDERID = ? ");
-                ps.setInt(1, ord.getOrderID());
-                rs = ps.executeQuery();
-                ArrayList<ProductLineItem> list = new ArrayList();
-                while(rs.next()){
-                    list.add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
-                }
-                ord.setOrderLineArr(list);
+                    ord.getOrderLineArr().add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
                 }
             }
         } catch (SQLException ex) {
@@ -263,11 +188,13 @@ public class OrderDaoImpl implements OrderDao{
     public boolean updateOrderStatus(Order ord) {
         int check = 0;
         try {
-            ps = con1.prepareStatement("UPDATE ORDERSTABLE SET ORDERSTATUS = ?");
+            ps = con1.prepareStatement("UPDATE ORDERSTABLE SET ORDERSTATUS = ? WHERE");
             ps.setString(1, ord.getOrderStatus());
             check = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeStreams();
         }
         return (check == 1);
     }
@@ -295,9 +222,9 @@ public class OrderDaoImpl implements OrderDao{
             ps.setInt(1, customerId);
             rs = ps.executeQuery();
             while(rs.next()){
-                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getInt("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
+                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getString("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
                 for(Order ord: orders){   
-                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUTSTABLE.PRODUCTID WHERE ORDERID = ? ");
+                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUCTSTABLE.PRODUCTID WHERE ORDERID = ? ");
                 ps.setInt(1, ord.getOrderID());
                 rs = ps.executeQuery();
              ArrayList<ProductLineItem> list = new ArrayList();
@@ -315,4 +242,30 @@ public class OrderDaoImpl implements OrderDao{
         return orders;
     }
    
+    @Override
+    public ArrayList<Order> getOrdersByStatus(String status) {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            ps = con1.prepareStatement("SELECT ORDERID, CUSTOMERID, TOTALAMOUNT, ORDERSTATUS, DELIVERADDRESSID, ORDERDATE, PAYMENTSTATUS FROM ORDERSTABLE WHERE ORDERSTATUS = ?");
+            ps.setString(1, status);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                orders.add(new Order(rs.getInt("ORDERID"), rs.getInt("CUSTOMERID"), rs.getDouble("TOTALAMOUNT"), rs.getString("ORDERSTATUS"), rs.getString("DELIVERADDRESSID"), rs.getDate("ORDERDATE"), rs.getString("PAYMENTSTATUS")));
+            }
+                for(Order ord: orders){   
+                ps = con1.prepareStatement("SELECT ORDERDETAILSTABLE.PRODUCTID, ORDERDETAILSTABLE.QUANTITY, ORDERDETAILSTABLE.PRODUCTPRICE, PRODUCTSTABLE.PRODUCTNAME FROM ORDERDETAILSTABLE INNER JOIN PRODUCTSTABLE ON ORDERDETAILSTABLE.PRODUCTID = PRODUCTSTABLE.PRODUCTID WHERE ORDERDETAILSTABLE.ORDERID = ? ");
+                ps.setInt(1, ord.getOrderID());
+                rs = ps.executeQuery();
+             ord.setOrderLineArr(new ArrayList<>());
+             while(rs.next()){
+                    ord.getOrderLineArr().add(new ProductLineItem(rs.getInt("PRODUCTID"), rs.getString("PRODUCTNAME"), rs.getInt("QUANTITY"), rs.getDouble("PRODUCTPRICE")));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeStreams(); 
+        }
+        return orders;
+    }
 }

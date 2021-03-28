@@ -16,9 +16,7 @@ public interface OrderDao {
     boolean addOrder(Order order);
     Order getOrder(int orderId);
     ArrayList<Order> getAllOrders();
-    ArrayList<Order> getDeliveredOrders();
-    ArrayList<Order> OustandingOrders();
-    ArrayList<Order> PreparedOrders();
+    ArrayList<Order> getOrdersByStatus(String status);
     boolean updateOrderStatus(Order ord);
     boolean removeOrder(int orderId);
     ArrayList<Order> getOrdersByCustomer(int customerId);
